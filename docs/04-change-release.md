@@ -14,6 +14,32 @@ Change & Release beskriver hur NordIQ går till produktion på ett kontrollerat 
 - RFC ska innehålla syfte, scope, risk, tidsfönster, kommunikation, rollback och approvers.
 - Rollback ska kunna aktiveras direkt vid definierade triggers.
 
+### CAB-perspektiv (varför varje roll behövs)
+
+- **Anna (IT Ops Lead):** Säkerställer att tjänsten är driftbar och hanterbar efter go-live.
+- **Karl (Dev Lead):** Säkerställer realistisk teknisk riskbild, begränsningar och åtgärdsförmåga.
+- **Erik (CFO):** Säkerställer kontroll på leverantörs- och kostnadsrisker.
+- **Lina (HR):** Säkerställer användarvärde, adoption och att tjänsten fungerar i praktiken.
+
+### Go / No-Go-kriterier (observerbara)
+
+- Plan för kvarstående mindre fel (P2/P3) är godkänd av IT Ops.
+- Mindre än 5 % av test-promptar returnerar felmeddelande.
+- Health checks är gröna i 24 sammanhängande timmar.
+- Skriftligt godkännande finns från samtliga i CAB.
+- Acceptanskriterier för normalflöden är godkända i kvalitetssäkrad miljö.
+
+### RFC-mall (minimum)
+
+1. Purpose
+2. Scope
+3. Technical Change Description
+4. Risk Assessment
+5. Rollback Plan
+6. Timeline and Window
+7. Communication Plan
+8. Approver List
+
 ```mermaid
 flowchart TD
     A["Go / No-Go Criteria"] --> B{"Kriterier uppnådda?"}

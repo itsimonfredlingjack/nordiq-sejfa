@@ -14,6 +14,22 @@ Operational readiness säkerställer att NordIQ kan hanteras stabilt i vardagen 
 - PIR ska genomföras efter SEV1/SEV2.
 - On-call och eskalering ska vara tydligt dokumenterad.
 
+### Major-Incident Playbook (minimum)
+
+| Steg | Aktivitet | Ansvarig |
+| :--- | :--- | :--- |
+| Identifiering | Larm från övervakning eller användarrapport. | IT Ops / Anna |
+| Triage och deklaration | Bedöm omfattning och deklarera Major Incident vid bred påverkan. | Incident Commander |
+| Isolering / failover | Välj kontrollerat läge: begränsa AI eller aktivera emergency redirect. | Technical Lead (Karl) |
+| Leverantörskontakt | Öppna och eskalera ärenden till CloudFrame/Lumeon vid beroenderisk. | IT-PM |
+| Upplösning | Verifiera återställd tjänst efter fix eller rollback. | Technical Lead (Karl) |
+| Kommunikationsstopp | Informera när läget är stabilt och incident avslutas. | Communications Lead (Lina) |
+
+### RCA-val (när används vad)
+
+- **5 Whys** används för enklare, avgränsade fel med tydlig händelsekedja.
+- **Contributing Factors** används för komplexa incidenter där flera delar bidrar (AI-agent, Knowledge Base, routing, människor och leverantörer).
+
 ```mermaid
 flowchart LR
     A["Identifiering"] --> B["Triage och deklaration"]
