@@ -25,13 +25,13 @@ flowchart LR
 
 ## Mätetal
 
-| Vad mäts (SLI) | Internt mål (SLO) |
-| :--- | :--- |
-| AI-agentens svarstid | p95 inom 5 sekunder |
-| Tillgänglighet | 99,5 % per kalendermånad |
-| Korrekt klassificering | 90 % rätt kategoriserade |
-| Tid till eskalering | Inom 2 minuter |
-| Knowledge Base-synk | Uppdaterad inom 24 timmar |
+| Vad mäts (SLI) | Internt mål (SLO) | Rationale |
+| :--- | :--- | :--- |
+| AI-agentens svarstid | p95 inom 5 sekunder | Användare förväntar sig omedelbar hjälp. |
+| Tillgänglighet | 99,5 % per kalendermånad | Tjänsten ska fungera som 24/7-stöd. |
+| Korrekt klassificering | 90 % rätt kategoriserade | Felklassificering driver warranty-risk och fel eskalering. |
+| Tid till eskalering | Inom 2 minuter | Okända ärenden ska snabbt nå IT Ops. |
+| Knowledge Base-synk | Uppdaterad inom 24 timmar | Föråldrad kunskap ger felaktiga AI-svar. |
 
 ## Ansvarig
 

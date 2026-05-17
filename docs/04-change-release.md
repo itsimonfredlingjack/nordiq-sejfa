@@ -41,7 +41,7 @@ flowchart TD
 - **Operativ releaseberedskap:** Anna (IT Ops Lead)
 - **Teknisk risk/åtgärd:** Karl (Dev Lead)
 - **Leverantör/kostnadsrisk:** Erik (CFO)
-- **Användarpåverkan/UAT:** Lina (HR)
+- **Användarpåverkan/användaracceptanstest:** Lina (HR)
 
 ## Nästa steg
 

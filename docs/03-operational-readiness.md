@@ -41,7 +41,7 @@ flowchart LR
 
 ## Nästa steg
 
-1. Fastställ faktisk on-call-rotation med backup-personer.
+1. Fastställ faktisk on-call-rotation med reservpersoner.
 2. Dokumentera handover-protokoll mellan skift.
 3. Schemalägg återkommande granskning av förbättringsregistret.
 

@@ -28,7 +28,7 @@ flowchart LR
 
 ## Status
 
-- **Mognad:** Utkast för skolleverans
+- **Mognad:** Utkast för skoleleverans
 - **Sanningskälla:** [NordIQ_Go-Live_Readiness_Package-v2.md](./NordIQ_Go-Live_Readiness_Package-v2.md)
 - **Struktur:** Standardiserad sidmall för alla huvuddelar
 
