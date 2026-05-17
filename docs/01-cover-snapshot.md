@@ -17,7 +17,7 @@ NordIQ är en tjänst som gör det möjligt för NordTechs medarbetare att få s
 | Martin, CIO[^cio] | Politisk risk minskar om NordIQ levererar | Offentligt misslyckande går uppåt | Lägre L1-personalkostnad | Fel timing skadar trovärdigheten |
 | Erik, CFO | Förutsägbarare IT-kostnader | Lumeon API-kostnad kan skala okontrollerat | Färre timmar mot L1-support | Ny löpande kostnad för tokens + hosting |
 
-## Utility / Warranty / Risk focus
+## Utility / Warranty / Risk Focus
 
 - Utility: Fast self-service, intelligent triage, lower manual load
 - Warranty: High availability, controlled failover, current Knowledge Base

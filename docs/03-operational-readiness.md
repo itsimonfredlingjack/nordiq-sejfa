@@ -13,6 +13,8 @@
 | Upplösning | Verifiera normal drift efter fix eller rollback | Technical Lead (Karl) |
 | Kommunikationsstopp | Informera att faran är över | Communications Lead (Lina) |
 
+## RCA
+
 RCA: 5 Whys for linear failures, Contributing Factors for multi-cause incidents.
 
 ## Principer för NordIQ
