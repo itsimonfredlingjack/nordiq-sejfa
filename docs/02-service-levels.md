@@ -5,6 +5,7 @@
 ## Varför
 
 Denna sida definierar vad som är tillräckligt bra kvalitet i drift innan produktion: svarstid, tillgänglighet, klassificering, eskalering och kunskapsuppdatering.
+Målen är satta för att spegla användarnas förväntan på snabb hjälp, NordIQ:s 24/7-positionering, riskerna med felklassificering samt behovet av snabb handover till IT Ops när AI:n inte kan lösa ett ärende.
 
 ## Beslut / Krav
 
