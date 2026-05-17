@@ -16,7 +16,7 @@ SLO = mål. SLI = mätning av målet.
 
 ## Service Request Handling
 
-| Steg | Namn | NordTech |
+| Steg | Namn | Flow |
 | :--- | :--- | :--- |
 | 1 | Submit | Ärendet skickas in via Teams, e-post eller webbportal |
 | 2 | Triage | NordIQ klassificerar FAQ / Incident / Request / Change |
