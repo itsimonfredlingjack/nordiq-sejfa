@@ -1,0 +1,1086 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ITIL Zeros to Heroes - Saga</title>
+  <style>
+    :root {
+      --navy: #0d1b2a;
+      --navy-2: #112233;
+      --navy-3: #1a2e44;
+      --gold: #f5a623;
+      --teal: #0ea5e9;
+      --green: #22c55e;
+      --purple: #a78bfa;
+      --red: #ef4444;
+      --white: #ffffff;
+      --light: #c8dcf0;
+      --muted: #7a8ba0;
+      --line: rgba(200, 220, 240, 0.18);
+      --panel: rgba(26, 46, 68, 0.88);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: #07111d;
+      color: var(--light);
+      font-family: Calibri, "Segoe UI", Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    body { display: grid; place-items: center; }
+
+    .deck {
+      width: min(100vw, 177.78vh);
+      height: min(56.25vw, 100vh);
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 86% 17%, rgba(14, 165, 233, 0.14), transparent 25%),
+        radial-gradient(circle at 18% 84%, rgba(245, 166, 35, 0.08), transparent 28%),
+        linear-gradient(135deg, #09131f 0%, var(--navy) 58%, #07111d 100%);
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.32);
+    }
+
+    .deck::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.026) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.026) 1px, transparent 1px);
+      background-size: 52px 52px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.72), transparent 75%);
+      pointer-events: none;
+    }
+
+    .accent-bar {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 2.2%;
+      background: var(--gold);
+      z-index: 5;
+    }
+
+    .top-band {
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 12%;
+      background: rgba(17, 34, 51, 0.82);
+      border-bottom: 1px solid var(--line);
+      z-index: 1;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: none;
+      padding: 7.3% 7.2% 5.8% 8.5%;
+      z-index: 2;
+    }
+
+    .slide.active {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 4%;
+      animation: enter 220ms ease-out;
+    }
+
+    @keyframes enter {
+      from { opacity: 0; transform: translateX(18px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .section {
+      margin: 0 0 0.8% 0;
+      color: var(--gold);
+      font-weight: 700;
+      font-size: clamp(0.7rem, 1vw, 0.95rem);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+
+    h1 {
+      max-width: 12ch;
+      color: var(--white);
+      font-size: clamp(2.35rem, 5.45vw, 5.4rem);
+      line-height: 0.96;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      max-width: 24ch;
+      color: var(--white);
+      font-size: clamp(1.5rem, 3vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .wide-title { max-width: 30ch; }
+
+    .lead {
+      margin-top: 22px;
+      max-width: 56ch;
+      color: var(--light);
+      font-size: clamp(0.98rem, 1.38vw, 1.42rem);
+      line-height: 1.34;
+    }
+
+    .content {
+      min-height: 0;
+      display: grid;
+      align-content: center;
+      gap: 3.2%;
+    }
+
+    .title-grid {
+      display: grid;
+      grid-template-columns: 1.02fr 0.98fr;
+      gap: 5%;
+      align-items: end;
+    }
+
+    .hero-panel,
+    .card,
+    .quote,
+    .map-box,
+    .track {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .hero-panel {
+      min-height: 52vh;
+      padding: 6%;
+      display: grid;
+      align-content: space-between;
+      border-top: 5px solid var(--gold);
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      color: var(--light);
+      font-size: clamp(0.78rem, 0.95vw, 0.92rem);
+      white-space: nowrap;
+    }
+
+    .grid-2,
+    .grid-3,
+    .grid-4 {
+      display: grid;
+      gap: 2%;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    .card {
+      min-width: 0;
+      padding: clamp(14px, 1.5vw, 24px);
+      border-top: 4px solid var(--teal);
+    }
+
+    .card.gold { border-top-color: var(--gold); }
+    .card.green { border-top-color: var(--green); }
+    .card.purple { border-top-color: var(--purple); }
+    .card.red { border-top-color: var(--red); }
+
+    .card h3 {
+      margin-bottom: 10px;
+      color: var(--white);
+      font-size: clamp(0.94rem, 1.22vw, 1.22rem);
+      line-height: 1.12;
+    }
+
+    .card p,
+    .card li {
+      color: var(--light);
+      font-size: clamp(0.76rem, 0.96vw, 0.98rem);
+      line-height: 1.26;
+    }
+
+    .card ul {
+      margin: 0;
+      padding-left: 1.15em;
+    }
+
+    .quote {
+      border-left: 5px solid var(--gold);
+      padding: 2.3% 3%;
+    }
+
+    .quote p {
+      color: var(--white);
+      font-size: clamp(1rem, 1.5vw, 1.56rem);
+      line-height: 1.22;
+      font-weight: 700;
+    }
+
+    .small-quote p {
+      font-size: clamp(0.86rem, 1.08vw, 1.1rem);
+      font-weight: 400;
+      color: var(--light);
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: 0.82fr 2.1fr 0.82fr;
+      gap: 2%;
+      align-items: stretch;
+    }
+
+    .flow-end {
+      display: grid;
+      place-items: center;
+      text-align: center;
+      min-height: 32vh;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      color: var(--white);
+      font-weight: 700;
+      font-size: clamp(1rem, 1.35vw, 1.35rem);
+      padding: 8%;
+    }
+
+    .map-box {
+      padding: 3%;
+      display: grid;
+      gap: 10px;
+    }
+
+    .map-row {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .map-item {
+      min-height: 66px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      border-radius: 6px;
+      border: 1px solid rgba(200,220,240,0.18);
+      background: rgba(255,255,255,0.04);
+      color: var(--light);
+      font-weight: 700;
+      font-size: clamp(0.68rem, 0.88vw, 0.88rem);
+      line-height: 1.1;
+      padding: 8px;
+    }
+
+    .map-item.core {
+      grid-column: span 3;
+      color: var(--white);
+      background: rgba(245,166,35,0.14);
+      border-color: rgba(245,166,35,0.62);
+    }
+
+    .course-track {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .track {
+      min-height: 22vh;
+      padding: 13px 10px;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 10px;
+      border-top: 4px solid var(--gold);
+    }
+
+    .track:nth-child(2),
+    .track:nth-child(5) { border-top-color: var(--teal); }
+    .track:nth-child(3),
+    .track:nth-child(6) { border-top-color: var(--purple); }
+    .track:nth-child(4),
+    .track:nth-child(7) { border-top-color: var(--green); }
+
+    .num {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--gold);
+      color: #111827;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .track p {
+      color: var(--white);
+      font-weight: 700;
+      font-size: clamp(0.7rem, 0.84vw, 0.88rem);
+      line-height: 1.14;
+    }
+
+    .footer {
+      position: absolute;
+      left: 8.5%;
+      right: 7.2%;
+      bottom: 2.2%;
+      z-index: 6;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      color: var(--muted);
+      font-size: clamp(0.72rem, 0.86vw, 0.88rem);
+    }
+
+    .keys {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .key {
+      width: 28px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+      border-radius: 5px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      color: var(--light);
+      font-weight: 700;
+    }
+
+    .progress {
+      position: absolute;
+      left: 2.2%;
+      right: 0;
+      bottom: 0;
+      height: 5px;
+      background: rgba(255,255,255,0.08);
+      z-index: 7;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--gold), var(--teal));
+      transition: width 180ms ease;
+    }
+
+    @media (max-aspect-ratio: 1/1) {
+      body { overflow: auto; }
+      .deck { width: 100vw; height: 100svh; }
+      .slide {
+        padding: 18% 6% 12% 9%;
+        overflow: auto;
+      }
+      .slide.active { display: block; }
+      .content,
+      .title-grid,
+      .grid-2,
+      .grid-3,
+      .grid-4,
+      .flow,
+      .map-row,
+      .course-track {
+        display: block;
+      }
+      .card,
+      .quote,
+      .hero-panel,
+      .map-box,
+      .track,
+      .flow-end {
+        margin-bottom: 14px;
+        min-height: auto;
+      }
+      .footer { left: 9%; right: 6%; }
+      .keys span:last-child { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="deck" aria-live="polite">
+    <div class="accent-bar"></div>
+    <div class="top-band"></div>
+
+    <section class="slide active">
+      <div></div>
+      <div class="content title-grid">
+        <div>
+          <p class="section">ITIL-sagan</p>
+          <h1>Zeros to Heroes</h1>
+          <p class="lead">En pedagogisk berättelse om hur nya elever går från att se IT som “servrar och tickets” till att förstå ITIL 4, ITSM, Service Value System och de practices en IT-PM faktiskt använder.</p>
+        </div>
+        <aside class="hero-panel">
+          <div>
+            <p class="section">Berättelsens löfte</p>
+            <p class="lead">Vi börjar utan karta. Vi slutar med ett språk för service, value, outcomes, handovers, changes, releases och improvement.</p>
+          </div>
+          <div class="badge-row">
+            <span class="badge">SVS</span>
+            <span class="badge">SVC</span>
+            <span class="badge">Practices</span>
+            <span class="badge">IT-PM</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">01 / Prolog</p>
+        <h2 class="wide-title">Förr trodde våra Zeros att IT handlade om technology. Sedan började användarna fråga efter outcomes.</h2>
+      </header>
+      <div class="content">
+        <div class="quote"><p>En användare säger inte “SMTP relay är nere” först. Användaren säger: “Jag kan inte skicka fakturor.” Där börjar ITSM.</p></div>
+        <div class="grid-3">
+          <article class="card gold"><h3>Technology</h3><p>Servers, networks, applications och människor som håller dem igång.</p></article>
+          <article class="card"><h3>Service</h3><p>Förmågan för en user att göra något användbart, reliable, med predictable cost and risk.</p></article>
+          <article class="card green"><h3>ITSM</h3><p>Skiftet från att tänka technology till att tänka services.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">02 / Den första kartan</p>
+        <h2 class="wide-title">ITIL är inte en trollformel. Det är ett framework och ett gemensamt språk.</h2>
+      </header>
+      <div class="content">
+        <div class="grid-2">
+          <article class="card green">
+            <h3>ITIL är</h3>
+            <ul>
+              <li>Ett framework med vocabulary, recommendations och ett sätt att strukturera samtalet om IT services.</li>
+              <li>Descriptive of patterns that work, inte prescriptive om exakt hur organisationen måste arbeta.</li>
+              <li>En lingua franca mellan IT departments, vendors, consultants och auditors.</li>
+            </ul>
+          </article>
+          <article class="card red">
+            <h3>ITIL är inte</h3>
+            <ul>
+              <li>Inte en methodology som Scrum eller PRINCE2.</li>
+              <li>Inte en compliance standard som ISO 27001.</li>
+              <li>Inte opposed to Agile, DevOps eller Lean.</li>
+              <li>Inte a substitute for thinking.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">03 / Service, Value, Outcome</p>
+        <h2>Våra Zeros lär sig att output inte är slutmålet. Outcome är det användaren bryr sig om.</h2>
+      </header>
+      <div class="content">
+        <div class="grid-4">
+          <article class="card gold"><h3>Service</h3><p>Ett sätt att enable value co-creation genom att hjälpa customers uppnå outcomes utan att hantera specific costs and risks själva.</p></article>
+          <article class="card"><h3>Value</h3><p>Perceived benefits, usefulness och importance. Value finns i consumerns upplevelse.</p></article>
+          <article class="card purple"><h3>Output</h3><p>En tangible eller intangible deliverable: en report, endpoint eller payslip.</p></article>
+          <article class="card green"><h3>Outcome</h3><p>Resultatet för en stakeholder: “jag fick betalt i tid”, “jag kunde fatta beslut”, “jag är nöjd med service”.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">04 / Utility och Warranty</p>
+        <h2 class="wide-title">En service måste både göra rätt sak och fungera tillräckligt bra.</h2>
+      </header>
+      <div class="content">
+        <div class="grid-2">
+          <article class="card gold"><h3>Utility</h3><p>Does it do what’s needed? Fitness for purpose. En payment service måste faktiskt kunna flytta pengar.</p></article>
+          <article class="card green"><h3>Warranty</h3><p>Does it work reliably enough? Fitness for use: availability, capacity, security och continuity.</p></article>
+        </div>
+        <div class="quote small-quote"><p>En service med Utility men utan Warranty kan göra rätt sak, men opålitligt. En service med Warranty men utan Utility är stabil, men hjälper ingen.</p></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">05 / Cost och Risk</p>
+        <h2>Hjältarna förstår att varje service flyttar cost och risk mellan provider och consumer.</h2>
+      </header>
+      <div class="content">
+        <div class="grid-4">
+          <article class="card green"><h3>Costs removed</h3><p>Consumer slipper till exempel driva egen mail server.</p></article>
+          <article class="card red"><h3>Costs imposed</h3><p>Consumer betalar kanske subscription istället.</p></article>
+          <article class="card green"><h3>Risks removed</h3><p>Consumer slipper oroa sig för backups.</p></article>
+          <article class="card red"><h3>Risks imposed</h3><p>Consumer blir beroende av provider uptime.</p></article>
+        </div>
+        <div class="quote small-quote"><p>En bra service tar bort mer cost och risk än den lägger på. En dålig service gör motsatsen.</p></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">06 / Den stora porten: SVS</p>
+        <h2 class="wide-title">Service Value System är den stora kartan: opportunity och demand går in, value kommer ut.</h2>
+      </header>
+      <div class="content">
+        <div class="flow">
+          <div class="flow-end">Opportunity<br>Demand</div>
+          <div class="map-box">
+            <div class="map-row">
+              <div class="map-item">Guiding Principles</div>
+              <div class="map-item">Governance</div>
+              <div class="map-item">Service Value Chain</div>
+              <div class="map-item">Practices</div>
+              <div class="map-item">Continual Improvement</div>
+            </div>
+            <div class="map-row">
+              <div class="map-item core">Service Value System</div>
+              <div class="map-item core">Value co-creation</div>
+            </div>
+          </div>
+          <div class="flow-end">Value</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">07 / Skillnaden mellan SVS och SVC</p>
+        <h2>Här gör många elever sitt första misstag: Service Value Chain är inte hela Service Value System.</h2>
+      </header>
+      <div class="content">
+        <div class="grid-2">
+          <article class="card gold"><h3>SVS</h3><p>Hela systemet som omvandlar demand och opportunity till value. Här finns Guiding Principles, Governance, SVC, Practices och Continual Improvement.</p></article>
+          <article class="card green"><h3>SVC</h3><p>Operating model inuti SVS. Sex activities som används i olika ordningar beroende på value stream.</p></article>
+        </div>
+        <div class="quote small-quote"><p>SVC är motorn i borgen. SVS är hela borgen, människorna, reglerna, verktygen och förbättringsloopen.</p></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">08 / De sex SVC-aktiviteterna</p>
+        <h2 class="wide-title">Work flows genom Service Value Chain, men inte alltid i samma ordning.</h2>
+      </header>
+      <div class="content">
+        <div class="grid-3">
+          <article class="card gold"><h3>Plan</h3><p>Gemensam understanding of vision, status och direction.</p></article>
+          <article class="card green"><h3>Improve</h3><p>Continually improve products, services och practices.</p></article>
+          <article class="card"><h3>Engage</h3><p>Förstå stakeholder needs, transparency och relationships.</p></article>
+          <article class="card purple"><h3>Design & Transition</h3><p>Säkerställa quality, costs och time-to-market.</p></article>
+          <article class="card"><h3>Obtain/Build</h3><p>Se till att service components finns när och där de behövs.</p></article>
+          <article class="card green"><h3>Deliver & Support</h3><p>Leverera och supporta enligt agreed specifications och stakeholder expectations.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">09 / Four Dimensions</p>
+        <h2 class="wide-title">Hjältarna får fyra linser. Ignorera en, och service går sönder där.</h2>
+      </header>
+      <div class="content">
+        <div class="grid-4">
+          <article class="card gold"><h3>Organizations and people</h3><p>Roles, responsibilities, structure, culture och skills.</p></article>
+          <article class="card"><h3>Information and technology</h3><p>Data, systems, integrations och tools.</p></article>
+          <article class="card purple"><h3>Partners and suppliers</h3><p>Vendors, cloud providers, outsourcers och contracts.</p></article>
+          <article class="card green"><h3>Value streams and processes</h3><p>Hur work faktiskt flows end to end.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">10 / Seven Guiding Principles</p>
+        <h2>De sju principerna blir hjältarnas kompass när verkligheten är rörig.</h2>
+      </header>
+      <div class="content">
+        <div class="course-track">
+          <div class="track"><div class="num">1</div><p>Focus on value</p></div>
+          <div class="track"><div class="num">2</div><p>Start where you are</p></div>
+          <div class="track"><div class="num">3</div><p>Progress iteratively with feedback</p></div>
+          <div class="track"><div class="num">4</div><p>Collaborate and promote visibility</p></div>
+          <div class="track"><div class="num">5</div><p>Think and work holistically</p></div>
+          <div class="track"><div class="num">6</div><p>Keep it simple and practical</p></div>
+          <div class="track"><div class="num">7</div><p>Optimize and automate</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">11 / 34 Practices</p>
+        <h2 class="wide-title">Practices är organisationens förmågor: people, process, information och technology för ett mål.</h2>
+      </header>
+      <div class="content">
+        <div class="grid-3">
+          <article class="card gold"><h3>General management practices</h3><p>Practices borrowed and adapted från broader business management.</p></article>
+          <article class="card green"><h3>Service management practices</h3><p>Practices native to service management. Här finns mycket av classic ITIL content.</p></article>
+          <article class="card purple"><h3>Technical management practices</h3><p>Technology disciplines re-framed för service-management context.</p></article>
+        </div>
+        <div class="quote small-quote"><p>I vår saga går hjältarna djupt i de practices en IT-PM faktiskt använder.</p></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">12 / IT-PM får sin roll</p>
+        <h2>En IT-PM är inte operations team, men måste kunna lämna över till operations team.</h2>
+      </header>
+      <div class="content">
+        <div class="grid-3">
+          <article class="card gold"><h3>You hand things over</h3><p>Varje project slutar med att en working service lämnas till en operations organization.</p></article>
+          <article class="card"><h3>You design before you build</h3><p>Service support behöver tänkas in under design, inte efteråt.</p></article>
+          <article class="card green"><h3>You broker between worlds</h3><p>Developers, operations, customers, suppliers och management blir delar av samma value system.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">13 / Resrutten</p>
+        <h2 class="wide-title">Nu börjar hjältarnas practice journey: define, run, improve, change och release.</h2>
+      </header>
+      <div class="content">
+        <div class="course-track">
+          <div class="track"><div class="num">1</div><p>Service Level Management</p></div>
+          <div class="track"><div class="num">2</div><p>Service Request Management</p></div>
+          <div class="track"><div class="num">3</div><p>Incident Management</p></div>
+          <div class="track"><div class="num">4</div><p>Problem Management</p></div>
+          <div class="track"><div class="num">5</div><p>Continual Improvement</p></div>
+          <div class="track"><div class="num">6</div><p>Change Enablement</p></div>
+          <div class="track"><div class="num">7</div><p>Release Management</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">14 / Service Level Management</p>
+        <h2 class="wide-title">Första uppdraget: göra “should work well” mätbart och möjligt att prata om.</h2>
+      </header>
+      <div class="content">
+        <div class="quote"><p>Service Level Management gör om “det borde fungera bra” till: vad lovar vi, hur vet vi om det händer, och vad gör vi när det inte händer?</p></div>
+        <div class="grid-3">
+          <article class="card gold"><h3>Agreement</h3><p>Vad som är promised.</p></article>
+          <article class="card"><h3>Measurement</h3><p>Vad som faktiskt händer.</p></article>
+          <article class="card green"><h3>Review</h3><p>Samtalet där promise och reality reconciled.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">15 / SLM vocabulary</p>
+        <h2>Hjältarna lär sig orden som gör service quality konkret.</h2>
+      </header>
+      <div class="content">
+        <div class="grid-3">
+          <article class="card gold"><h3>SLA</h3><p>Service Level Agreement: documented agreement mellan provider och customer.</p></article>
+          <article class="card"><h3>SLO</h3><p>Service Level Objective: internal target som service försöker träffa.</p></article>
+          <article class="card green"><h3>SLI</h3><p>Service Level Indicator: actual measurement från systemet.</p></article>
+          <article class="card purple"><h3>OLA</h3><p>Operational Level Agreement: internal agreement mellan teams.</p></article>
+          <article class="card"><h3>UC</h3><p>Underpinning Contract: agreement med external supplier.</p></article>
+          <article class="card red"><h3>Watermelon SLA</h3><p>Numbers green, customers angry. Dashboarden ser bra ut, men value upplevs inte.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">16 / SLM discipline</p>
+        <h2 class="wide-title">Hjältarna mäter innan de lovar, annars bygger de bara gissningar.</h2>
+      </header>
+      <div class="content">
+        <div class="grid-3">
+          <article class="card gold"><h3>Business-based targets</h3><p>Skriv targets på språk business använder, inte bara engineering language.</p></article>
+          <article class="card"><h3>Targets plural</h3><p>Explicit, measurable och anchored till customer success.</p></article>
+          <article class="card green"><h3>Assessed, monitored, managed</h3><p>Det räcker inte att skriva targets. De måste mätas och användas.</p></article>
+        </div>
+        <div class="quote small-quote"><p>Measure before you commit. Setting a target without baseline data is guessing.</p></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">17 / Service Request Management</p>
+        <h2>Andra uppdraget: bygga en front door för normal, återkommande user demand.</h2>
+      </header>
+      <div class="content">
+        <div class="grid-3">
+          <article class="card gold"><h3>Service request</h3><p>Formal request från user för något pre-defined.</p></article>
+          <article class="card"><h3>Service catalogue</h3><p>Published menu över vad users kan requesta.</p></article>
+          <article class="card green"><h3>Request model</h3><p>Standardised fulfillment path för en återkommande request type.</p></article>
+          <article class="card purple"><h3>Self-service portal</h3><p>Channel där users browsar catalogue och submit requests.</p></article>
+          <article class="card"><h3>Approval</h3><p>Authorisation step där det behövs innan fulfillment.</p></article>
+          <article class="card red"><h3>Ghost catalogue</h3><p>Catalogue entries som finns, men ingen vet hur de ska fulfillas.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">18 / SRM boundaries</p>
+        <h2 class="wide-title">Hjältarna måste klassificera rätt: request, incident, change eller problem?</h2>
+      </header>
+      <div class="content">
+        <div class="grid-2">
+          <article class="card green"><h3>SRM fungerar när</h3><p>Requests är recurring, predictable och anticipated. Samma typer av requests kommer om och om igen, så vägen kan designas.</p></article>
+          <article class="card red"><h3>SRM går fel när</h3><p>Boundary confusion uppstår: incidents trackas som requests, requests trackas som incidents, och hela front door blir suddig.</p></article>
+        </div>
+        <div class="quote small-quote"><p>Make the portal faster than the bypass. Annars ringer users “den IT-person jag känner”.</p></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">19 / Incident Management</p>
+        <h2>När något går sönder måste hjältarna återställa normal service operation snabbt.</h2>
+      </header>
+      <div class="content">
+        <div class="quote"><p>Incident Management gör om “something is broken” till en calm, repeatable response shape.</p></div>
+        <div class="grid-3">
+          <article class="card red"><h3>Goal</h3><p>Minimize negative impact genom att restore normal service operation as quickly as possible.</p></article>
+          <article class="card gold"><h3>Not the goal</h3><p>Första målet är inte root cause. Cause-finding hör till Problem Management.</p></article>
+          <article class="card green"><h3>Discipline</h3><p>Inte heroism. Samma response shape varje gång.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">20 / Incident roles</p>
+        <h2 class="wide-title">Alla får en roll, så ingen behöver improvisera mitt i stormen.</h2>
+      </header>
+      <div class="content">
+        <div class="grid-3">
+          <article class="card gold"><h3>Incident Commander</h3><p>Owns the response. Runs the war room. Does not debug.</p></article>
+          <article class="card"><h3>Communications Lead</h3><p>Owns the comms ladder och updates stakeholders on cadence.</p></article>
+          <article class="card green"><h3>SME</h3><p>Provides technical diagnosis och drives remediation.</p></article>
+          <article class="card purple"><h3>Scribe</h3><p>Maintains the timeline, decisions, hand-offs och hypotheses.</p></article>
+          <article class="card"><h3>Customer Liaison</h3><p>Interfaces with affected users.</p></article>
+          <article class="card red"><h3>Unnamed major incident</h3><p>Slow drift handled as routine until it isn’t. Cure: predefined triggers och anyone can declare.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">21 / Severity</p>
+        <h2>Severity är inte drama. Det är coordination band som bestämmer response posture.</h2>
+      </header>
+      <div class="content">
+        <div class="grid-4">
+          <article class="card red"><h3>Sev 1</h3><p>Service unavailable to most users, data integrity at risk eller security incident. War room snabbt, täta updates.</p></article>
+          <article class="card gold"><h3>Sev 2</h3><p>Major degradation eller significant subset affected. On-call leads, war room om det escalates.</p></article>
+          <article class="card"><h3>Sev 3</h3><p>Localized, single user eller small group, obvious workaround. Standard ticket queue.</p></article>
+          <article class="card green"><h3>Sev 4</h3><p>Cosmetic, intermittent eller self-resolved. Routine backlog.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">22 / Problem Management</p>
+        <h2 class="wide-title">När incidenten lugnat sig vågar hjältarna fråga: what made this possible?</h2>
+      </header>
+      <div class="content">
+        <div class="grid-2">
+          <article class="card red"><h3>Incident asks</h3><p>Fix it now.</p></article>
+          <article class="card green"><h3>Problem asks</h3><p>What is the underlying cause, and how do we make sure this stops happening?</p></article>
+        </div>
+        <div class="quote small-quote"><p>Ett team som bara gör Incident fixes the same thing forever. Ett team som gör Problem well stops repeating itself.</p></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">23 / Problem vocabulary</p>
+        <h2>Hjältarna lär sig skilja på Problem, Known Error och Workaround.</h2>
+      </header>
+      <div class="content">
+        <div class="grid-3">
+          <article class="card gold"><h3>Problem</h3><p>A cause, or potential cause, of one or more incidents.</p></article>
+          <article class="card"><h3>Known Error</h3><p>Problem analyzed; cause understood; ofta documented med workaround, väntar på permanent fix.</p></article>
+          <article class="card green"><h3>Workaround</h3><p>Restores eller maintains service utan att ta bort underlying cause. Temporary by intent.</p></article>
+          <article class="card purple"><h3>RCA</h3><p>Structured investigation som etablerar why an incident or pattern occurred.</p></article>
+          <article class="card"><h3>Reactive / Proactive</h3><p>Efter incidents, eller pattern-spotting före incidents.</p></article>
+          <article class="card red"><h3>Orphaned Known Error</h3><p>Problem tickets aged in years; workarounds normalised.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">24 / Continual Improvement</p>
+        <h2 class="wide-title">Hjältarna slutar säga “vi borde bli bättre” och börjar driva improvement som arbete.</h2>
+      </header>
+      <div class="content">
+        <div class="grid-3">
+          <article class="card gold"><h3>CI Register</h3><p>Single, named list of intended improvements.</p></article>
+          <article class="card"><h3>CI Item</h3><p>Specific improvement med owner, target outcome och sätt att veta att den succeeded.</p></article>
+          <article class="card green"><h3>CI Cadence</h3><p>Weekly, monthly eller quarterly rhythm där register reviewed och decisions made.</p></article>
+        </div>
+        <div class="quote small-quote"><p>Continual Improvement är inte ett separat phase. Det är embedded in everything.</p></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">25 / CI Register</p>
+        <h2>Registret gör improvement konkret nog att ägas, följas och sustainas.</h2>
+      </header>
+      <div class="content">
+        <div class="grid-4">
+          <article class="card gold"><h3>ID</h3><p>CI-### identifier.</p></article>
+          <article class="card"><h3>Source</h3><p>Incident, problem, SLO breach, retro eller feedback.</p></article>
+          <article class="card green"><h3>Improvement</h3><p>One sentence: vad specifikt vi ska göra.</p></article>
+          <article class="card purple"><h3>Owner</h3><p>A named human, not a team, not a role.</p></article>
+          <article class="card"><h3>Expected impact</h3><p>Vad som blir bättre, gärna measurable.</p></article>
+          <article class="card"><h3>Status</h3><p>Proposed → In progress → Done → Sustained.</p></article>
+          <article class="card gold"><h3>Review date</h3><p>När vi tittar på den igen.</p></article>
+          <article class="card red"><h3>Wallpaper Register</h3><p>Register maintained; no decisions ever made.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">26 / Change Enablement</p>
+        <h2 class="wide-title">Nu måste hjältarna säga ja till change på ett ansvarsfullt sätt.</h2>
+      </header>
+      <div class="content">
+        <div class="quote"><p>Change Enablement handlar om att move the right changes into production quickly and safely: neither bureaucratic gating nor reckless cowboy deploys.</p></div>
+        <div class="grid-3">
+          <article class="card gold"><h3>Change</h3><p>Addition, modification eller removal av något som could affect services.</p></article>
+          <article class="card"><h3>RFC</h3><p>Request for Change: what, why, risk, rollback, timing.</p></article>
+          <article class="card green"><h3>Change Authority</h3><p>Role/person som faktiskt approves a change.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">27 / Change taxonomy</p>
+        <h2 class="wide-title">Alla changes ska inte gå samma väg. Först: classify aggressively.</h2>
+      </header>
+      <div class="content">
+        <div class="grid-3">
+          <article class="card green"><h3>Standard Change</h3><p>Pre-authorized, low-risk, repeatable. Målet är att flytta så mycket säkert arbete hit som möjligt.</p></article>
+          <article class="card gold"><h3>Normal Change</h3><p>Behöver assessment och approval eftersom risk eller novelty finns kvar.</p></article>
+          <article class="card red"><h3>Emergency Change</h3><p>Streamlined approval path, men ska ha post-hoc review så emergency inte blir bypass culture.</p></article>
+        </div>
+        <div class="quote small-quote"><p>CAB advises, authority decides. En CAB som gates every change blir doorman CAB.</p></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">28 / Change discipline</p>
+        <h2>Hjältarna lär sig att safety inte kommer från långa möten, utan rätt decision path.</h2>
+      </header>
+      <div class="content">
+        <div class="grid-3">
+          <article class="card gold"><h3>Risk Assessment</h3><p>Blast radius × inverse-recoverability × inverse-understanding.</p></article>
+          <article class="card"><h3>Change Calendar</h3><p>Shared, visible schedule: who is changing what, when.</p></article>
+          <article class="card green"><h3>PIR</h3><p>Structured retrospective efter change. Loop closure mellan Change Enablement och Continual Improvement.</p></article>
+          <article class="card purple"><h3>Fit-to-purpose RFC</h3><p>Standard change behöver inte 12-page RFC. High-risk normal change behöver mer.</p></article>
+          <article class="card"><h3>Rollback</h3><p>Planen måste finnas innan trycket kommer.</p></article>
+          <article class="card red"><h3>“We feel ready”</h3><p>Inte ett criterion. Go/no-go ska vila på testable criteria.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">29 / Release Management</p>
+        <h2 class="wide-title">Sista porten: change ska bli verklighet för users, inte bara finnas i production.</h2>
+      </header>
+      <div class="content">
+        <div class="grid-2">
+          <article class="card gold"><h3>Deployment</h3><p>The technical act: code moves from one environment to another. Seconds to minutes.</p></article>
+          <article class="card green"><h3>Release</h3><p>The business-facing event: users start to experience the change. Comms goes out. Expectations are set.</p></article>
+        </div>
+        <div class="quote small-quote"><p>Deployment is technical. Release is human. Feature flags are how you decouple them.</p></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">30 / Modern release patterns</p>
+        <h2>Hjältarna minskar blast radius och verifierar innan de öppnar för alla.</h2>
+      </header>
+      <div class="content">
+        <div class="grid-4">
+          <article class="card gold"><h3>Feature-flagged rollout</h3><p>Code deployed behind a flag; flag flip är release.</p></article>
+          <article class="card green"><h3>Blue-green deployment</h3><p>Två production environments; traffic switched; rollback på sekunder.</p></article>
+          <article class="card"><h3>Canary release</h3><p>Release till liten slice först, widen om signals stay green.</p></article>
+          <article class="card purple"><h3>Dark launch</h3><p>Code runs in production men output hidden, så behaviour kan verifyas med real traffic.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">31 / Go/no-go</p>
+        <h2 class="wide-title">En hero säger inte “det känns redo”. En hero skriver criteria som kan observeras.</h2>
+      </header>
+      <div class="content">
+        <div class="grid-2">
+          <article class="card red">
+            <h3>Bad criteria</h3>
+            <ul>
+              <li>We feel ready</li>
+              <li>QA looks good</li>
+              <li>Operations have signed off</li>
+              <li>It’s been tested enough</li>
+            </ul>
+          </article>
+          <article class="card green">
+            <h3>Better criteria</h3>
+            <ul>
+              <li>All P1 tickets from staging closed</li>
+              <li>Health check green for 24 consecutive hours</li>
+              <li>Named approver list have signed in writing</li>
+              <li>All happy-path acceptance scenarios pass in pre-prod</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">32 / IT-PM under release</p>
+        <h2 class="wide-title">IT-PM är in the room, men inte release manager.</h2>
+      </header>
+      <div class="content">
+        <div class="grid-2">
+          <article class="card green">
+            <h3>IT-PM owns</h3>
+            <ul>
+              <li>Comms plan</li>
+              <li>Stakeholder briefing</li>
+              <li>Expectation-setting</li>
+              <li>Support brief</li>
+              <li>Post-release feedback loop</li>
+            </ul>
+          </article>
+          <article class="card red">
+            <h3>IT-PM does not own</h3>
+            <ul>
+              <li>Deploy mechanics</li>
+              <li>Rollback procedure</li>
+              <li>Technical go/no-go signal</li>
+              <li>Code, infrastructure, traffic</li>
+              <li>The release timing decision itself</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">33 / Practice fabric</p>
+        <h2>Zeros blir Heroes när de ser att practices hänger ihop.</h2>
+      </header>
+      <div class="content">
+        <div class="grid-3">
+          <article class="card gold"><h3>SLM</h3><p>Every change is a candidate threat to the SLOs.</p></article>
+          <article class="card red"><h3>Incident → Problem</h3><p>PIR och incident trend data feed Problem Management.</p></article>
+          <article class="card green"><h3>Problem → Change</h3><p>Permanent fixes for Known Errors are Changes.</p></article>
+          <article class="card purple"><h3>Change → Release</h3><p>Change Enablement governs decision to change; Release Management governs user-facing event.</p></article>
+          <article class="card"><h3>Release → CI</h3><p>PIR feeds the CI Register; recurring release failures are CI candidates.</p></article>
+          <article class="card"><h3>Service Desk</h3><p>Needs the support brief before users start calling.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">34 / Hjältarnas karta</p>
+        <h2 class="wide-title">När en ny demand dyker upp kan hjältarna sketch the value stream.</h2>
+      </header>
+      <div class="content">
+        <div class="quote"><p>Pick a demand type, sketch the value stream, identify which practices it touches, and make sure each is in place before go-live.</p></div>
+        <div class="grid-3">
+          <article class="card gold"><h3>Define</h3><p>Service Level Management och Service Request Management.</p></article>
+          <article class="card"><h3>Run and improve</h3><p>Incident Management, Problem Management och Continual Improvement.</p></article>
+          <article class="card green"><h3>Change and release</h3><p>Change Enablement och Release Management.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="section">35 / Epilog</p>
+        <h2 class="wide-title">Zeros blev Heroes när de slutade se ITIL som paperwork och började se det som ett value system.</h2>
+      </header>
+      <div class="content">
+        <div class="grid-3">
+          <article class="card gold"><h3>De talar samma språk</h3><p>Service, Value, Outcome, SLA, Incident, Problem, Change, Release.</p></article>
+          <article class="card"><h3>De ser helheten</h3><p>SVS, SVC, Four Dimensions, Guiding Principles och Practices.</p></article>
+          <article class="card green"><h3>De kan leda övergången</h3><p>Från project till working service, från demand till value, från chaos till calm coordination.</p></article>
+        </div>
+        <div class="quote small-quote"><p>Och där börjar nästa kurs: att ta en verklig service, rita dess value stream och se vilka practices som måste vara redo innan go-live.</p></div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="keys"><span class="key">←</span><span class="key">→</span><span>Navigera med piltangenterna</span></div>
+      <div><span id="currentSlide">1</span> / <span id="totalSlides">36</span></div>
+    </footer>
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+  </main>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const currentSlide = document.getElementById("currentSlide");
+    const totalSlides = document.getElementById("totalSlides");
+    const progressFill = document.getElementById("progressFill");
+    let index = 0;
+
+    totalSlides.textContent = slides.length;
+
+    function showSlide(nextIndex) {
+      index = Math.max(0, Math.min(slides.length - 1, nextIndex));
+      slides.forEach((slide, slideIndex) => {
+        slide.classList.toggle("active", slideIndex === index);
+      });
+      currentSlide.textContent = String(index + 1);
+      progressFill.style.width = `${((index + 1) / slides.length) * 100}%`;
+    }
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowRight" || event.key === "PageDown" || event.key === " ") {
+        event.preventDefault();
+        showSlide(index + 1);
+      }
+      if (event.key === "ArrowLeft" || event.key === "PageUp") {
+        event.preventDefault();
+        showSlide(index - 1);
+      }
+      if (event.key === "Home") showSlide(0);
+      if (event.key === "End") showSlide(slides.length - 1);
+    });
+
+    window.showSlide = showSlide;
+    showSlide(0);
+  </script>
+</body>
+</html>
