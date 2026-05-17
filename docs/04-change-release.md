@@ -8,7 +8,7 @@ Change & Release beskriver hur NordIQ går till produktion på ett kontrollerat 
 
 ## Beslut / Krav
 
-- Martin (CIO) är formell Change Authority för go/no-go.
+- Martin Lindqvist (CIO) är formell Change Authority för go/no-go.
 - CAB ska ge komplett beslutsunderlag från drift, teknik, kostnad och användarperspektiv.
 - Go/no-go-kriterier måste vara uppfyllda innan release passerar.
 - RFC ska innehålla syfte, scope, risk, tidsfönster, kommunikation, rollback och approvers.
@@ -63,7 +63,7 @@ flowchart TD
 
 ## Ansvarig
 
-- **Change Authority:** Martin (CIO)
+- **Change Authority:** Martin Lindqvist (CIO)
 - **Operativ releaseberedskap:** Anna (IT Ops Lead)
 - **Teknisk risk/åtgärd:** Karl (Dev Lead)
 - **Leverantör/kostnadsrisk:** Erik (CFO)

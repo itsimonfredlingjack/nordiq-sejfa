@@ -31,7 +31,7 @@ NordIQ finns för att ge medarbetare snabbare first-line-stöd utan onödig vän
 
 ## Nästa steg
 
-1. Bekräfta ägarskap för AI-svar och eskalering.
+1. Fastställ ägarskap för AI-svar och eskalering.
 2. Säkerställ att riskbilden i denna sida matchar SLO, incident- och change-sidorna.
 3. Godkänn att denna sida används som gemensam tjänstebeskrivning inför go-live.
 

@@ -6,7 +6,11 @@
 
 Denna sida definierar vad som är tillräckligt bra kvalitet i drift innan produktion: svarstid, tillgänglighet, klassificering, eskalering och kunskapsuppdatering.
 Målen är satta för att spegla användarnas förväntan på snabb hjälp, NordIQ:s 24/7-positionering, riskerna med felklassificering samt behovet av snabb handover till IT Ops när AI:n inte kan lösa ett ärende.
-Detta innebär konkret att p95-svarstid på 5 sekunder säkrar användarupplevelsen, 99,5 % tillgänglighet ger en tydlig driftnivå för ett 24/7-löfte, och 90 % klassificering fungerar som miniminivå för att undvika för många felroutade ärenden.
+Detta innebär konkret:
+
+- p95-svarstid på 5 sekunder säkrar användarupplevelsen.
+- 99,5 % tillgänglighet ger en tydlig driftnivå för ett 24/7-löfte.
+- 90 % klassificering fungerar som miniminivå för att undvika för många felroutade ärenden.
 
 ## Beslut / Krav
 
