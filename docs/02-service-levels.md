@@ -35,7 +35,7 @@ flowchart LR
     E --> F["Verify"]
     F --> G["Close"]
 
-    D --> H["IT Ops"]
+    D --> H["IT Ops (vid behov)"]
     H --> E
 ```
 
