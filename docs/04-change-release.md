@@ -30,7 +30,7 @@ Förbestämda tester för NordIQ måste uppnås för att tjänsten ska tillåtas
 
 - En plan för hantering av kvarstående mindre fel. P2/P3 ska vara godkända av IT Ops.
 - Mindre än fem procent av test-promptar får returnera felmeddelande.
-- Gröna Health Checks genom 24 sammanhängande timmar
+- Gröna Health Checks genom 24 sammanhängande timmar.
 
 ```mermaid
 flowchart LR
