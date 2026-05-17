@@ -1,47 +1,78 @@
 # 1. Cover & Snapshot
 
-*Service framing for go-live decisions.*
+*Describes NordIQ in service language — not as a stack.*
 
-## Service Overview
+## Service Definition
 
-NordIQ provides AI-assisted first-line support with clear escalation to IT Ops when automation cannot resolve the case.
+NordIQ är en tjänst som gör det möjligt för NordTechs medarbetare att få snabbare hjälp med vanliga IT-supportbehov, utan att behöva vänta på manuell first-line-hantering eller förstå vart ärendet ska routas.
 
-- **Utility:** Fast self-service, intelligent triage, lower manual load
-- **Warranty:** High availability, controlled failover, current knowledge base
-- **Risk focus:** AI answer ownership, classification quality, supplier dependency
+## Stakeholders & Value Statements
 
-## Stakeholder Snapshot
+Värdeflödet mellan tjänsten och dess intressenter sammanfattas i tabellen nedan: vilka risker som tas bort, vilka som introduceras, samt kostnader som elimineras eller tillkommer.
 
-| Role | Value | Key Risk |
-| :--- | :--- | :--- |
-| HR | Faster onboarding support | Incorrect AI answers |
-| IT Ops | Lower repetitive ticket volume | Misrouted escalations |
-| Dev | Fewer L1 interruptions | Platform accountability on AI errors |
-| CIO | Scalable support model | Go-live decision exposure |
-| CFO | More predictable support cost | Variable API/hosting spend |
+### Risker per roll
 
-## Service Operating Model
+| Roll | Risk Removed | Risk Imposed | Cost Removed | Cost Imposed |
+| :--- | :--- | :--- | :--- | :--- |
+| Lina, HR | Kan onboarda nya medarbetare utan flaskhals hos IT | AI-hallucinationer kan ge upphov till fel i onboardingen, t.ex. fel access | Tidseffektivt om det fungerar | Dubbelarbete om det inte fungerar. Kan t.ex. behöva utfärda change requests vid fel |
+| Karl, Dev | Mindre brandsläckning på enkla L1-ärenden — mer tid för plattformsutveckling | Om agenten ger fel svar pekar fingret mot plattformen han byggt | Slipper manuell support för FAQ-klass ärenden | Äger kunskapsbasen — måste hållas uppdaterad kontinuerligt |
+| Martin, CIO[^cio] | Politisk risk minskar om NordIQ levererar — kan visa Q4-besparingar till CEO | Om NordIQ fallerar offentligt bär han ansvaret uppåt | Lägre L1-personalkostnad på sikt | Go-live-beslut är hans — fel timing skadar hans trovärdighet |
+| Erik, CFO | Förutsägbarare IT-kostnader om deflection håller | Lumeon API-kostnad skalar okontrollerat vid hög volym | Färre timmar fakturerade mot L1-support | Ny löpande kostnad: tokens + hosting som inte funnits tidigare |
+
+## 1.2 The Four Dimensions
+
+### 1. Organizations & People
+
+NordIQ stödjer NordTechs medarbetare genom att erbjuda omedelbar first-line IT-support. Lina (Head of HR) använder tjänsten ofta för onboarding och åtkomstrelaterade problem, medan Anna (IT Ops Lead) hanterar eskalerade ärenden och säkerställer tjänstens stabilitet. CIO Martin fokuserar på affärsvärde och minskad operativ risk, medan CFO Erik fokuserar på kostnadseffektivitet. En viktig rollgräns som måste definieras tydligt är ägandeskapet av AI-agentens svar. När NordIQ besvarar ett ärende automatiskt är det oklart om ansvaret faller på Anna (IT Ops) eller Karl (Dev Lead).
+
+### 2. Information & Technology
+
+Tjänsten är byggd kring NordIQ:s AI-supportagent och stöds av Lumeon API (LLM), interna kunskapsdatabaser, vanliga frågor (FAQ) samt ticketing- och eskaleringssystemet. Svarskvaliteten är direkt beroende av att kunskapsbasen hålls uppdaterad: en föråldrad kunskapsbas ger felaktiga svar oavsett hur väl övriga delar av tjänsten fungerar. Det gör kunskapsbas-synkroniseringen till den dominerande riskfaktorn i den här dimensionen, och motiverar det definierade SLO:t om uppdatering inom 24 timmar.
+
+### 3. Partners & Suppliers
+
+NordIQ är beroende av externa leverantörer som CloudFrame Nordic för drift och hosting, samt Lumeon API för AI-genererade supportsvar. Dessa leverantörer är kritiska för tjänstens tillgänglighet men skapar också beroenderisker och potentiella single points of failure.
+
+### 4. Value Streams & Processes
+
+Value stream börjar när en medarbetare skickar in en IT-supportförfrågan. NordIQ ger ett direkt svar på vanliga problem som lösenordsåterställning, onboardingstöd och åtkomstförfrågningar. Om problemet inte kan lösas automatiskt eskaleras det till Anna och IT Ops-teamet inom två minuter. Value stream inkluderar även det definierade failover-flödet vid avbrott i AI-agenten, då ärenden automatiskt dirigeras till FAQ-sidor i SharePoint och tickets skapas manuellt. Det är inte ett undantag från value stream utan en planerad del av den, dokumenterad för att säkerställa kontinuitet även när normalflödet inte är tillgängligt.
+
+## 1.3 Utility vs Warranty
+
+### Utility
+
+- Omedelbar självbetjäning: Löser FAQ-ärenden dygnet runt utan väntetid.
+- Intelligent triage: Sorterar och dirigerar ärenden (Incident, Request, Change) till rätt instans.
+- Datadrivna insikter: Identifierar kunskapsluckor och återkommande problem för att driva ständiga förbättringar.
+
+NordIQ skapar värde för NordTech genom att ge medarbetarna en tjänst som genererar mer tillgänglig IT-support. Tjänsten hanterar ärenden som FAQ-frågor, onboarding och frågor om lösenordshantering. Syftet är att användaren inte ska behöva vänta på manuell first-line support. Tjänsten ska klassificera ärenden i olika kategorier — exempelvis Incident, Service Request eller eventuell Change Request — för att sedan eskalera dessa till korrekt instans.
+
+### Warranty
+
+- Availability: Tjänsten ska matcha användarnas behov av 24/7-support, vilket kräver hög uptime från både CloudFrame och Lumeon.
+- Continuity: Robusta fallback-rutiner vid avbrott i AI-plattformen (t.ex. automatisk omdirigering till manuell hantering).
+- Korrekt information: Säkerställa att Knowledge Base alltid är synkad så att AI:n ger korrekta och säkra svar.
+
+NordIQ ska kunna hantera 60 % av first-line-flödet med tillgänglighet dygnet runt. Warranty beskriver hur NordIQ säkerställer att tjänsten fungerar pålitligt, säkert och med rätt kvalitet — för att tjänsten ska kunna uppfylla sitt löfte om snabb support dygnet runt. Detta ställer krav på hög tillgänglighet från både CloudFrame Nordic och Lumeon API, samt att kunskapsbasen alltid är uppdaterad. Centrala risker för tjänsten är felklassificering av ärenden och att dessa dirigeras fel väg, vilket kan resultera i att ärenden inte fångas upp.
+
+En annan central risk är avbrott i AI-plattformen eller API-kopplingen till Lumeon och Knowledge Base. Vid sådana avbrott ska händelsen klassificeras som en incident och hanteras enligt Incident Management. Backup ska fungera genom att NordIQ går in i ett failover-läge där inkommande ärenden automatiskt dirigeras till FAQ-sidor i SharePoint och tickets skapas i det befintliga ärendehanteringssystemet utan AI-hantering.
+
+Identifierade risker hanteras vidare i Major-Incident Playbook, Incident Management och Problem Management.
+
+### Service Operating Model
 
 ```mermaid
-flowchart TB
-    U["Employee Request"] --> Q{"Request Type"}
+flowchart LR
+    U["User"] --> A["NordIQ AI Agent"]
+    A --> R["Resolve via Knowledge Base"]
+    A --> E["Escalate to IT Ops within 2 min"]
+    A --> F["Failover to SharePoint FAQ"]
 
-    Q --> F["FAQ / Standard Request\nResolved by NordIQ"]
-    Q --> I["Incident / Unknown\nEscalate to IT Ops"]
-    Q --> C["Change-related\nRoute to Change Process"]
-
-    F --> K["Knowledge Capture"]
-    I --> K
-    C --> K
-
-    K --> M["Service Improvement"]
+    S1["CloudFrame Nordic"] -. supports .-> A
+    S2["Lumeon API"] -. supports .-> A
 ```
 
-## KPI Snapshot
-
-- AI first response target: **p95 <= 5s**
-- Escalation for unresolved requests: **<= 2 min**
-- Knowledge base update cycle: **<= 24h**
+[^cio]: CIO = Chief Information Officer
 
 ## Related Docs
 
