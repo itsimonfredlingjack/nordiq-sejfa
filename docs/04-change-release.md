@@ -1,58 +1,48 @@
 # 4. Change & Release
 
-*Go/No-Go governance and controlled rollback.*
+*The plan to take NordIQ into production — and back out.*
 
-## Governance Model
+## CAB Design[^cab]
 
-- **Change Authority:** CIO owns final Go/No-Go decision
-- **CAB input:** IT Ops, Dev, CFO, and HR provide operational, technical, cost, and user readiness signals
-- **Release principle:** No release without observable criteria and rollback readiness
+### Change Authority
 
-## Go/No-Go Criteria
+Martin Lindqvist (CIO) — ansvarar över go-live-besluten och äger de politiska riskerna.
 
-- Approved plan for residual P2/P3 defects
-- < 5% failed responses in test prompts
-- Green health checks for 24 continuous hours
-- Written CAB approvals completed
-- Acceptance criteria passed in quality-assured environment
+Martin Lindqvist är formell Change Authority för NordIQ go-live. Han äger det slutliga Go/No-Go-beslutet eftersom förändringen påverkar hela NordTechs interna supportmodell och innebär politisk risk mot ledning och verksamhet. CAB:s roll är att ge Martin ett tillräckligt komplett underlag för beslut, inte att ersätta hans ansvar.
 
-## RFC Minimum Template
+### Change Advisory Board
 
-1. Purpose
-2. Scope
-3. Technical Change Description
-4. Risk Assessment
-5. Rollback Plan
-6. Timeline and Window
-7. Communication Plan
-8. Approver List
+**Anna Berg (IT Ops Lead)**  
+Ärver NordIQ efter go-live och behöver kunna lita på att tjänsten är driftbar. Hennes fokus är incidenthantering, eskalering, second-line-belastning och om tjänsten går att underhålla i vardagen.
 
-## Decision & Rollback Flow
+**Karl Eek (Internal Dev Lead)**  
+Innehar förståelse för agentplattformen samt den tekniska risk som existerar bakom NordIQ. Hans roll i CAB är att förklara systemets begränsningar, AI-agentens beteende, integrationsrisker, tekniska beroenden och hur snabbt teamet kan åtgärda fel efter go-live.
+
+**Erik Holm (CFO)**  
+Äger leverantörsavtalen med CloudFrame Nordic och Lumeon API samt följer kostnadsutvecklingen. Hans perspektiv är viktigt eftersom NordIQ är beroende av externa leverantörer och eftersom LLM-användning kan skapa rörliga kostnader som behöver vara synliga och kontrollerade.
+
+**Lina Nordin (Head of HR)**  
+Är en av de tyngsta interna användarna av first-line support, särskilt vid onboarding, åtkomstfrågor och medarbetarrelaterade IT-behov. Hon representerar användarperspektivet och är troligen en av de första som märker om NordIQ ger felaktiga svar, har dålig användarupplevelse eller inte löser praktiska problem i vardagen. Linas feedback är därför viktig för UAT, adoption, continual improvement och för att bedöma om tjänsten faktiskt skapar värde för medarbetarna.
+
+## Go / No-Go Criteria
+
+Förbestämda tester för NordIQ måste uppnås för att tjänsten ska tillåtas rulla ut för release. Följande kriterier anses som goda för att uppnå en kvalitativ release för NordIQ. Governance-kriterier måste vara observerbara innan tjänsten får passera:
+
+- En plan för hantering av kvarstående mindre fel. P2/P3 ska vara godkända av IT Ops.
+- Mindre än fem procent av test-promptar får returnera felmeddelande.
+- Gröna Health Checks genom 24 sammanh
 
 ```mermaid
-flowchart TB
-    A["Go/No-Go Criteria Check"] --> B{"All criteria met?"}
-
-    B -->|Yes| C["CAB confirms readiness"]
-    C --> D["CIO Go decision"]
-    D --> E["Production Release"]
-
-    B -->|No| F["No-Go / Remediation"]
-
-    E --> G{"Rollback trigger hit?"}
-    G -->|No| H["Hypercare Monitoring"]
-    G -->|Yes| I["CIO rollback approval"]
-    I --> J["Disable NordIQ"]
-    J --> K["Redirect to FAQ + ticketing"]
-    K --> L["IT Ops manual first-line"]
-    L --> M["User communication"]
+flowchart LR
+    A["Go / No-Go Criteria"] --> B{"Go/No-Go"}
+    B -->|Go| C["Release"]
+    B -->|No-Go| D["Block release"]
+    C --> E{"Incident efter release?"}
+    E -->|Ja| F["Rollback"]
+    E -->|Nej| G["Fortsatt drift"]
 ```
 
-## Release KPIs
-
-- Criteria completion: **100% before release**
-- Health check stability: **24h green window**
-- Rollback drill readiness: **verified before go-live**
+[^cab]: CAB = Change Advisory Board (the body that approves go-lives)
 
 ## Related Docs
 
