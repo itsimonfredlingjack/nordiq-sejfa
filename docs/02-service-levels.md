@@ -19,6 +19,18 @@ Detta innebär konkret:
 - OLA per steg ska vara beslutad och möjlig att följa upp.
 - Ärenden som AI inte kan lösa ska eskaleras snabbt till IT Ops.
 
+### Service Request Handling (operativ detalj)
+
+| Steg | Namn | Vad som händer hos NordTech |
+| :--- | :--- | :--- |
+| 1 | Submit | Medarbetaren skickar in ärendet via Teams, e-post eller webbportal. |
+| 2 | Triage | NordIQ klassificerar ärendet (FAQ, Incident, Request eller Change). |
+| 3 | Approve | Ärenden som kräver beslut skickas till rätt godkännare. |
+| 4 | Assign | Ärendet routas till AI, IT Ops, Incident/Change eller annan resolvergrupp. |
+| 5 | Fulfill | AI löser enkla ärenden, övriga hanteras enligt prioritet. |
+| 6 | Verify | Lösningen verifieras via användarbekräftelse eller kontroll. |
+| 7 | Close | Ärendet stängs och lärdom förs till Knowledge Base vid behov. |
+
 ```mermaid
 flowchart LR
     A["1. Submit"] --> B["2. Triage"]

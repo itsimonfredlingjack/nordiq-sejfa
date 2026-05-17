@@ -13,6 +13,16 @@ NordIQ finns för att ge medarbetare snabbare first-line-stöd utan onödig vän
 - Warranty: hög tillgänglighet, fungerande failover och korrekt information från Knowledge Base.
 - Ansvarsgräns för AI-svar måste vara tydlig mellan IT Ops och Dev.
 
+### Stakeholder risk- och kostnadsbalans
+
+| Roll | Risk Removed | Risk Imposed | Cost Removed | Cost Imposed |
+| :--- | :--- | :--- | :--- | :--- |
+| Lina (HR) | Mindre väntetid vid onboarding | Felaktiga AI-svar kan ge fel accessflöde | Mindre manuell koordinering | Extraarbete vid felaktiga svar |
+| Karl (Dev) | Mindre avbrott för enkla L1-frågor | Tekniskt ansvar när agenten svarar fel | Mindre ad hoc-support | Löpande arbete med kunskapsbas |
+| Martin (CIO) | Lägre operativ och politisk risk vid lyckad leverans | Hög synlighet vid misslyckad lansering | Effektivare supportmodell | Beslutsrisk vid fel timing |
+| Erik (CFO) | Mer förutsägbar supportkostnad | Rörlig API-kostnad kan öka snabbt | Lägre manuell first-line-kostnad | Ny löpande kostnad för tokens/hosting |
+| Anna (IT Ops) | Lägre volym repetitiva ärenden | Felklassificering kan ge fel belastning | Mer tid för komplexa incidenter | Driftansvar för en tjänst hon inte byggt |
+
 ## Mätetal
 
 | Mätområde | Målbild |

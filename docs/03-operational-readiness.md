@@ -29,6 +29,7 @@ Operational readiness säkerställer att NordIQ kan hanteras stabilt i vardagen 
 
 - **5 Whys** används för enklare, avgränsade fel med tydlig händelsekedja.
 - **Contributing Factors** används för komplexa incidenter där flera delar bidrar (AI-agent, Knowledge Base, routing, människor och leverantörer).
+- Contributing Factors ska fokusera på systematiska förhållanden som möjliggjorde incidenten, inte på enskilda individer.
 
 ```mermaid
 flowchart LR
