@@ -2,40 +2,34 @@
 
 *Defines what “good enough” means before go-live.*
 
-## Internal SLOs (Service Level Objectives)
+## Varför
 
-För varje SLO definierar NordTech ett SLI — det vill säga den statistik som går att skapa utifrån systemet. SLO är vårt target; SLI definieras som på vilket sätt NordIQ uppnår SLO. I tabellen mäts SLI genom att samla in faktisk driftdata från tjänsten (t.ex. svarstid, tillgänglighet eller antal lösta ärenden) och jämföra den siffran mot målet i SLO.
+Denna sida definierar vad som är tillräckligt bra kvalitet i drift innan produktion: svarstid, tillgänglighet, klassificering, eskalering och kunskapsuppdatering.
+Målen är satta för att spegla användarnas förväntan på snabb hjälp, NordIQ:s 24/7-positionering, riskerna med felklassificering samt behovet av snabb handover till IT Ops när AI:n inte kan lösa ett ärende.
+Detta innebär konkret:
 
-| Vad mäts (SLI) | Internt mål (SLO) | Rationale |
+- p95-svarstid på 5 sekunder säkrar användarupplevelsen.
+- 99,5 % tillgänglighet ger en tydlig driftnivå för ett 24/7-löfte.
+- 90 % klassificering fungerar som miniminivå för att undvika för många felroutade ärenden.
+
+## Beslut / Krav
+
+- SLO ska vara mätbara via tydliga SLI:er.
+- Service Request-flödet ska följas från inkommen förfrågan till stängning.
+- OLA per steg ska vara beslutad och möjlig att följa upp.
+- Ärenden som AI inte kan lösa ska eskaleras snabbt till IT Ops.
+
+### Service Request Handling (operativ detalj)
+
+| Steg | Namn | Vad som händer hos NordTech |
 | :--- | :--- | :--- |
-| AI-agentens svarstid per förfrågan | p95 ska få svar inom 5 sekunder | Lina och övriga användare förväntar sig omedelbar hjälp. |
-| Tjänstens tillgänglighet (uptime) | 99,5 % per kalendermånad | NordIQ marknadsförs som 24/7-stöd. 99,5 % ger ~3,6 h tolererat avbrott/månad. |
-| Korrekt klassificering av ärenden | 90 % rätt kategoriserade (FAQ / Incident / Request) | Felklassificering är den definierade warranty-risken; 90 % är miniminivå för att fallback inte ska triggas för ofta. |
-| Tid till eskalering vid okänt ärende | Eskalering minst inom 2 minuter från inkommet ärende | Om AI:n inte kan hantera ärendet ska det nå Anna/IT Ops innan användaren hunnit ge upp. |
-| Kunskapsbas-synk | Uppdaterad Knowledge Base inom 24 h vid kända förändringar | Föråldrad KB ger felaktiga svar — direkt koppling till warranty-kravet om korrekt information. |
-
-## Service Request Handling
-
-NordTech hanterar användares önskemål om hjälp, information eller tillgång till nya resurser genom NordIQ, IT Ops och eventuell eskalering vid behov.
-
-1. **Submit —** Medarbetaren skickar in ärendet via Teams, e-post eller webbportal.
-2. **Triage —** NordIQ klassificerar ärendet automatiskt (FAQ / Incident / Request / Change).
-3. **Fulfill —** AI-agenten löser 40–60 % av inkommande ärenden.
-4. **Eskalering —** Resterande ärenden skickas till Anna (IT Ops) inom 2 minuter (kopplat till SLO 4).
-5. **Verify and close —** Ärendet markeras som löst, användaren bekräftar eller ticket stängs automatiskt.
-
-### OLA per steg
-
-| Steg | Rubrik | OLA |
-| :--- | :--- | :--- |
-| 1 | Förfrågan skickas in | Registreras direkt |
-| 2 | Ärendet klassificeras | Klassificering inom 2 sek |
-| 3 | Första svar ges | Första AI-svar p95 < 5 sek |
-| 4 | Eskalering vid behov | Ticket/eskalering skapas inom 2 min |
-| 5 | IT Ops hanterar | Hantering påbörjas enligt prioritet, t.ex. SEV1 inom 15 min, SEV2 inom 60 min |
-| 6 | Stängning & lärande | Knowledge Base uppdateras inom 24 h vid känd förändring eller återkommande fel |
-
-### Detaljerat flöde
+| 1 | Submit | Medarbetaren skickar in ärendet via Teams, e-post eller webbportal. |
+| 2 | Triage | NordIQ klassificerar ärendet (FAQ, Incident, Request eller Change). |
+| 3 | Approve | Ärenden som kräver beslut skickas till rätt godkännare. |
+| 4 | Assign | Ärendet routas till AI, IT Ops, Incident/Change eller annan resolvergrupp. |
+| 5 | Fulfill | AI löser enkla ärenden, övriga hanteras enligt prioritet. |
+| 6 | Verify | Lösningen verifieras via användarbekräftelse eller kontroll. |
+| 7 | Close | Ärendet stängs och lärdom förs till Knowledge Base vid behov. |
 
 ```mermaid
 flowchart LR
@@ -47,12 +41,30 @@ flowchart LR
     F --> G["7. Close"]
 ```
 
-| Steg | Namn | Vad som händer hos NordTech |
+## Mätetal
+
+| Vad mäts (SLI) | Internt mål (SLO) | Rationale |
 | :--- | :--- | :--- |
-| 1 | Submit | Medarbetaren skickar in ärendet via Teams, e-post eller webbportal. Ärendet registreras direkt. |
-| 2 | Triage | NordIQ klassificerar ärendet automatiskt som FAQ, Service Request, Incident eller Change. Klassificering sker inom 2 sekunder. |
-| 3 | Approve | Om ärendet kräver godkännande skickas det till rätt godkännare, t.ex. chef, budgetägare, security eller dataägare. För fördefinierade låg-risk-ärenden kan godkännandet vara förhandsgodkänt. |
-| 4 | Assign | Ärendet routas till rätt fulfiller: AI-agent, IT Ops, Incident Management, Change Enablement, Dev eller extern leverantör. Ärenden som AI inte kan hantera assignas vidare inom 2 minuter enligt SLO 4. |
-| 5 | Fulfill | AI-agenten löser cirka 40–60 % av inkommande ärenden. Övriga ärenden hanteras av rätt resolver enligt prioritet. Om ärendet är en incident används SEV-nivåer, t.ex. SEV1 inom 15 min och SEV2 inom 60 min. |
-| 6 | Verify | Lösningen verifieras, antingen genom användarbekräftelse eller automatiserad kontroll. |
-| 7 | Close | Ärendet stängs. Om ärendet visar en kunskapslucka eller återkommande fel uppdateras kunskapsbasen inom 24 timmar. |
+| AI-agentens svarstid | p95 inom 5 sekunder | Användare förväntar sig omedelbar hjälp. |
+| Tillgänglighet | 99,5 % per kalendermånad | Tjänsten ska fungera som 24/7-stöd. |
+| Korrekt klassificering | 90 % rätt kategoriserade | Felklassificering driver warranty-risk och fel eskalering. |
+| Tid till eskalering | Inom 2 minuter | Okända ärenden ska snabbt nå IT Ops. |
+| Knowledge Base-synk | Uppdaterad inom 24 timmar | Föråldrad kunskap ger felaktiga AI-svar. |
+
+## Ansvarig
+
+- **SLO-ägare:** Anna (IT Ops Lead)
+- **Teknisk leverans av mätdata:** Karl (Dev Lead)
+- **Uppföljning mot verksamhetsvärde:** Martin (CIO)
+
+## Nästa steg
+
+1. Säkerställ att mätdata kan tas ut för samtliga SLI:er.
+2. Verifiera att OLA-tiderna är förankrade hos IT Ops.
+3. Definiera rapporteringsrutin före och efter go-live.
+
+## Vidare läsning
+
+- [1. Cover & Snapshot](./01-cover-snapshot.md)
+- [3. Operational Readiness](./03-operational-readiness.md)
+- [4. Change & Release](./04-change-release.md)
