@@ -1,55 +1,34 @@
 # NordIQ SEJFA
 
-Docs as Code-struktur för skolmaterialet **Go-Live Readiness Package** för NordIQ, en AI-stödd First-Line Support-tjänst vid NordTech AB.
+Docs-as-Code repository for the **NordIQ Go-Live Readiness Package**.
 
-## Syfte
+## Go-Live Readiness Document Set
 
-Detta repo beskriver hur NordIQ kan gå till produktion på ett kontrollerat sätt med ITIL-fokus: tjänstebild, servicenivåer, operativ beredskap samt change/release.
-
-## Målgrupp
-
-- Kursgrupp/lärare inom ITIL och service management
-- Roller som ska fatta go/no-go-beslut (CIO, IT Ops, Dev, CFO, HR)
-- Team som ansvarar för drift, incident och förbättring
-
-## Läs i denna ordning
-
-1. [1. Cover & Snapshot](./docs/01-cover-snapshot.md)
-2. [2. Service Levels](./docs/02-service-levels.md)
-3. [3. Operational Readiness](./docs/03-operational-readiness.md)
-4. [4. Change & Release](./docs/04-change-release.md)
+- [1. Cover & Snapshot](./docs/01-cover-snapshot.md)
+- [2. Service Levels](./docs/02-service-levels.md)
+- [3. Operational Readiness](./docs/03-operational-readiness.md)
+- [4. Change & Release](./docs/04-change-release.md)
 
 ```mermaid
-flowchart LR
-    A["1. Cover & Snapshot"] --> B["2. Service Levels"]
-    B --> C["3. Operational Readiness"]
-    C --> D["4. Change & Release"]
+flowchart TB
+    A["1. Cover & Snapshot\nService scope and value"]
+    B["2. Service Levels\nSLO/SLI and request flow"]
+    C["3. Operational Readiness\nIncident playbook and RCA"]
+    D["4. Change & Release\nGo/No-Go and rollback"]
+
+    A --> B --> C --> D
 ```
 
-## Status
+## Scope
 
-- **Mognad:** Utkast för skoleleverans
-- **Sanningskälla:** [NordIQ_Go-Live_Readiness_Package-v2.md](./NordIQ_Go-Live_Readiness_Package-v2.md)
-- **Struktur:** Standardiserad sidmall för alla huvuddelar
+This repo focuses on go-live decision support for CIO/CAB and operating teams.
 
-## Docs-as-Code arbetssätt
+## Working Model
 
-### PR-granskning för docs
+- Pull Request review before merge
+- Incremental updates via commits
+- Keep content short, presentation-ready, and aligned across all pages
 
-Alla ändringar i dokumentation ska gå via Pull Request och granskas av minst en person innan merge.
+## Source Material
 
-### Versionshistorik via commits
-
-Historik och beslut spåras i commit-meddelanden. Uppdatera dokumenten inkrementellt istället för stora engångsändringar.
-
-### Definition of Done (dokument)
-
-- [ ] Sidan följer mallen: Varför, Beslut/Krav, Mätetal, Ansvarig, Nästa steg
-- [ ] Innehållet är konsekvent med övriga docs och källdokument
-- [ ] Max ett Mermaid-diagram per sida
-- [ ] Sektionen **Vidare läsning** finns längst ner
-- [ ] Stavning/format är kontrollerat i Markdown-preview
-
-## Presentation (om ni vill ha snyggare UI)
-
-Om ni vill presentera samma innehåll med bättre navigation/sök kan ni publicera docs med t.ex. MkDocs eller Docusaurus utan att skriva om själva innehållet.
+- [NordIQ_Go-Live_Readiness_Package-v2.md](./NordIQ_Go-Live_Readiness_Package-v2.md)

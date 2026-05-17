@@ -1,51 +1,49 @@
 # 1. Cover & Snapshot
 
-*Describes NordIQ in service language — not as a stack.*
+*Service framing for go-live decisions.*
 
-## Varför
+## Service Overview
 
-NordIQ finns för att ge medarbetare snabbare first-line-stöd utan onödig väntetid och utan att användaren själv behöver förstå intern routing.
+NordIQ provides AI-assisted first-line support with clear escalation to IT Ops when automation cannot resolve the case.
 
-## Beslut / Krav
+- **Utility:** Fast self-service, intelligent triage, lower manual load
+- **Warranty:** High availability, controlled failover, current knowledge base
+- **Risk focus:** AI answer ownership, classification quality, supplier dependency
 
-- NordIQ ska vara en tjänst med tydligt värde för HR, IT Ops, Dev, CIO och CFO.
-- Utility: omedelbar självbetjäning, intelligent triage och datadrivna förbättringar.
-- Warranty: hög tillgänglighet, fungerande failover och korrekt information från Knowledge Base.
-- Ansvarsgräns för AI-svar måste vara tydlig mellan IT Ops och Dev.
+## Stakeholder Snapshot
 
-### Stakeholder risk- och kostnadsbalans
+| Role | Value | Key Risk |
+| :--- | :--- | :--- |
+| HR | Faster onboarding support | Incorrect AI answers |
+| IT Ops | Lower repetitive ticket volume | Misrouted escalations |
+| Dev | Fewer L1 interruptions | Platform accountability on AI errors |
+| CIO | Scalable support model | Go-live decision exposure |
+| CFO | More predictable support cost | Variable API/hosting spend |
 
-| Roll | Risk Removed | Risk Imposed | Cost Removed | Cost Imposed |
-| :--- | :--- | :--- | :--- | :--- |
-| Lina (HR) | Mindre väntetid vid onboarding | Felaktiga AI-svar kan ge fel accessflöde | Mindre manuell koordinering | Extraarbete vid felaktiga svar |
-| Karl (Dev) | Mindre avbrott för enkla L1-frågor | Tekniskt ansvar när agenten svarar fel | Mindre ad hoc-support | Löpande arbete med kunskapsbas |
-| Martin (CIO) | Lägre operativ och politisk risk vid lyckad leverans | Hög synlighet vid misslyckad lansering | Effektivare supportmodell | Beslutsrisk vid fel timing |
-| Erik (CFO) | Mer förutsägbar supportkostnad | Rörlig API-kostnad kan öka snabbt | Lägre manuell first-line-kostnad | Ny löpande kostnad för tokens/hosting |
-| Anna (IT Ops) | Lägre volym repetitiva ärenden | Felklassificering kan ge fel belastning | Mer tid för komplexa incidenter | Driftansvar för en tjänst hon inte byggt |
+## Service Operating Model
 
-## Mätetal
+```mermaid
+flowchart TB
+    U["Employee Request"] --> Q{"Request Type"}
 
-| Mätområde | Målbild |
-| :--- | :--- |
-| Tjänstens värde | Minskat manuellt first-line-arbete och snabbare hjälp till användare |
-| Riskkontroll | Definierade risker per roll med beslutad hantering |
-| Informationskvalitet | Knowledge Base hålls aktuell för att minska felaktiga AI-svar |
+    Q --> F["FAQ / Standard Request\nResolved by NordIQ"]
+    Q --> I["Incident / Unknown\nEscalate to IT Ops"]
+    Q --> C["Change-related\nRoute to Change Process"]
 
-## Ansvarig
+    F --> K["Knowledge Capture"]
+    I --> K
+    C --> K
 
-- **Tjänsteägare/beslutsägare:** Martin (CIO)
-- **Drift och eskalering:** Anna (IT Ops Lead)
-- **Teknisk plattform:** Karl (Dev Lead)
-- **Kostnad/leverantör:** Erik (CFO)
-- **Användarperspektiv:** Lina (HR)
+    K --> M["Service Improvement"]
+```
 
-## Nästa steg
+## KPI Snapshot
 
-1. Fastställ ägarskap för AI-svar och eskalering.
-2. Säkerställ att riskbilden i denna sida matchar SLO, incident- och change-sidorna.
-3. Godkänn att denna sida används som gemensam tjänstebeskrivning inför go-live.
+- AI first response target: **p95 <= 5s**
+- Escalation for unresolved requests: **<= 2 min**
+- Knowledge base update cycle: **<= 24h**
 
-## Vidare läsning
+## Related Docs
 
 - [2. Service Levels](./02-service-levels.md)
 - [3. Operational Readiness](./03-operational-readiness.md)

@@ -1,68 +1,48 @@
 # 3. Operational Readiness
 
-*How NordIQ runs day-to-day — and recovers when it breaks.*
+*Incident response, recovery, and learning model.*
 
-## Varför
+## Major Incident Playbook
 
-Operational readiness säkerställer att NordIQ kan hanteras stabilt i vardagen och att större incidenter hanteras snabbt, tydligt och lärande.
-
-## Beslut / Krav
-
-- Major incidents ska hanteras med tydlig playbook och rollfördelning.
-- Problem Management ska använda både 5 Whys och Contributing Factors beroende på komplexitet.
-- Kommunikation ska följa Incident Ladder med fast cadence.
-- PIR ska genomföras efter SEV1/SEV2.
-- On-call och eskalering ska vara tydligt dokumenterad.
-
-### Major-Incident Playbook (minimum)
-
-| Steg | Aktivitet | Ansvarig |
+| Phase | Action | Owner |
 | :--- | :--- | :--- |
-| Identifiering | Larm från övervakning eller användarrapport. | IT Ops / Anna |
-| Triage och deklaration | Bedöm omfattning och deklarera Major Incident vid bred påverkan. | Incident Commander |
-| Isolering / failover | Välj kontrollerat läge: begränsa AI eller aktivera emergency redirect. | Technical Lead (Karl) |
-| Leverantörskontakt | Öppna och eskalera ärenden till CloudFrame/Lumeon vid beroenderisk. | IT-PM |
-| Upplösning | Verifiera återställd tjänst efter fix eller rollback. | Technical Lead (Karl) |
-| Kommunikationsstopp | Informera när läget är stabilt och incident avslutas. | Communications Lead (Lina) |
+| Detect | Monitoring alert or user report | IT Ops |
+| Declare | Confirm impact and declare major incident | Incident Commander |
+| Contain | Limit blast radius / activate failover | Technical Lead |
+| Coordinate | Engage suppliers and support teams | IT PM |
+| Restore | Verify stable service after fix/rollback | Technical Lead |
+| Close Comms | Publish final status update | Communications Lead |
 
-### RCA-val (när används vad)
+## RCA Method Selection
 
-- **5 Whys** används för enklare, avgränsade fel med tydlig händelsekedja.
-- **Contributing Factors** används för komplexa incidenter där flera delar bidrar (AI-agent, Knowledge Base, routing, människor och leverantörer).
-- Contributing Factors ska fokusera på systematiska förhållanden som möjliggjorde incidenten, inte på enskilda individer.
+- **5 Whys:** for linear and bounded failures
+- **Contributing Factors:** for multi-cause incidents across AI, KB, routing, people, or suppliers
+- **Blameless principle:** analyze system conditions, not individuals
 
 ```mermaid
-flowchart LR
-    A["Identifiering"] --> B["Triage och deklaration"]
-    B --> C["Isolering / failover"]
-    C --> D["Leverantörskontakt"]
-    D --> E["Upplösning"]
-    E --> F["Kommunikationsstopp"]
+flowchart TB
+    A["Detect"] --> B["Declare"]
+    B --> C{"Major Incident?"}
+
+    C -->|Yes| D["Contain / Failover"]
+    C -->|No| E["Standard Incident Flow"]
+
+    D --> F["Supplier Coordination"]
+    F --> G["Restore Service"]
+    G --> H["Post-Incident Review"]
+    H --> I["Improvement Register"]
+
+    E --> I
 ```
 
-## Mätetal
+## Operational KPIs
 
-| Mätområde | Mål |
-| :--- | :--- |
-| War-room aktivering | Inom 15 minuter vid allvarlig incident |
-| Statusuppdatering under incident | Var 30:e minut till stabilt läge |
-| PIR-genomförande | Efter varje SEV1/SEV2 |
-| Förbättringsuppföljning | Åtgärder in i Continual Improvement Register |
+- War-room activation: **<= 15 min** for severe incidents
+- Incident communication cadence: **every 30 min** until stable
+- PIR completion: **required for SEV1/SEV2**
+- Improvement actions: **tracked in improvement register**
 
-## Ansvarig
-
-- **Incident Commander:** utsedd on-call roll
-- **Driftansvar:** Anna (IT Ops Lead)
-- **Teknisk återställning:** Karl (Dev Lead)
-- **Kommunikation:** Lina (Communications Lead vid incident)
-
-## Nästa steg
-
-1. Fastställ en on-call-rotation med reservpersoner.
-2. Dokumentera handover-protokoll mellan skift.
-3. Schemalägg återkommande granskning av förbättringsregistret.
-
-## Vidare läsning
+## Related Docs
 
 - [1. Cover & Snapshot](./01-cover-snapshot.md)
 - [2. Service Levels](./02-service-levels.md)

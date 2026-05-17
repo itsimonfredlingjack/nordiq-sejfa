@@ -1,35 +1,22 @@
 # 4. Change & Release
 
-*The plan to take NordIQ into production — and back out.*
+*Go/No-Go governance and controlled rollback.*
 
-## Varför
+## Governance Model
 
-Change & Release beskriver hur NordIQ går till produktion på ett kontrollerat sätt, med tydlig authority, observerbara kriterier och säker rollback.
+- **Change Authority:** CIO owns final Go/No-Go decision
+- **CAB input:** IT Ops, Dev, CFO, and HR provide operational, technical, cost, and user readiness signals
+- **Release principle:** No release without observable criteria and rollback readiness
 
-## Beslut / Krav
+## Go/No-Go Criteria
 
-- Martin Lindqvist (CIO) är formell Change Authority för go/no-go.
-- CAB ska ge komplett beslutsunderlag från drift, teknik, kostnad och användarperspektiv.
-- Go/no-go-kriterier måste vara uppfyllda innan release passerar.
-- RFC ska innehålla syfte, scope, risk, tidsfönster, kommunikation, rollback och approvers.
-- Rollback ska kunna aktiveras direkt vid definierade triggers.
+- Approved plan for residual P2/P3 defects
+- < 5% failed responses in test prompts
+- Green health checks for 24 continuous hours
+- Written CAB approvals completed
+- Acceptance criteria passed in quality-assured environment
 
-### CAB-perspektiv (varför varje roll behövs)
-
-- **Anna (IT Ops Lead):** Säkerställer att tjänsten är driftbar och hanterbar efter go-live.
-- **Karl (Dev Lead):** Säkerställer realistisk teknisk riskbild, begränsningar och åtgärdsförmåga.
-- **Erik (CFO):** Säkerställer kontroll på leverantörs- och kostnadsrisker.
-- **Lina (HR):** Säkerställer användarvärde, adoption och att tjänsten fungerar i praktiken.
-
-### Go / No-Go-kriterier (observerbara)
-
-- Plan för kvarstående mindre fel (P2/P3) är godkänd av IT Ops.
-- Mindre än 5 % av test-promptar returnerar felmeddelande.
-- Health checks är gröna i 24 sammanhängande timmar.
-- Skriftligt godkännande finns från samtliga i CAB.
-- Acceptanskriterier för normalflöden är godkända i kvalitetssäkrad miljö.
-
-### RFC-mall (minimum)
+## RFC Minimum Template
 
 1. Purpose
 2. Scope
@@ -40,42 +27,34 @@ Change & Release beskriver hur NordIQ går till produktion på ett kontrollerat 
 7. Communication Plan
 8. Approver List
 
+## Decision & Rollback Flow
+
 ```mermaid
-flowchart TD
-    A["Go / No-Go Criteria"] --> B{"Kriterier uppnådda?"}
-    B -->|Ja| C["Skriftligt godkännande från samtliga i CAB"]
-    B -->|Nej| D["Tjänsten får inte passera"]
-    E["Rollback trigger"] --> F["Martin godkänner beslut om rollback"]
-    F --> G["NordIQ tas offline"]
-    G --> H["Ärenden omdirigeras till SharePoint FAQ och befintligt ticketing-system"]
-    H --> I["Anna och IT-teamet återtar full manuell first-line-hantering"]
-    I --> J["Lina och samtliga medarbetare meddelas via e-post"]
+flowchart TB
+    A["Go/No-Go Criteria Check"] --> B{"All criteria met?"}
+
+    B -->|Yes| C["CAB confirms readiness"]
+    C --> D["CIO Go decision"]
+    D --> E["Production Release"]
+
+    B -->|No| F["No-Go / Remediation"]
+
+    E --> G{"Rollback trigger hit?"}
+    G -->|No| H["Hypercare Monitoring"]
+    G -->|Yes| I["CIO rollback approval"]
+    I --> J["Disable NordIQ"]
+    J --> K["Redirect to FAQ + ticketing"]
+    K --> L["IT Ops manual first-line"]
+    L --> M["User communication"]
 ```
 
-## Mätetal
+## Release KPIs
 
-| Mätområde | Mål |
-| :--- | :--- |
-| Go-live readiness | Samtliga kriterier uppfyllda och godkända |
-| Health checks | Gröna i 24 sammanhängande timmar |
-| Testkvalitet | < 5 % felmeddelanden i test-promptar |
-| Rollback-beredskap | Triggerlista och steg verifierade |
+- Criteria completion: **100% before release**
+- Health check stability: **24h green window**
+- Rollback drill readiness: **verified before go-live**
 
-## Ansvarig
-
-- **Change Authority:** Martin Lindqvist (CIO)
-- **Operativ releaseberedskap:** Anna (IT Ops Lead)
-- **Teknisk risk/åtgärd:** Karl (Dev Lead)
-- **Leverantör/kostnadsrisk:** Erik (CFO)
-- **Användarpåverkan/användaracceptanstest:** Lina (HR)
-
-## Nästa steg
-
-1. Bekräfta att alla CAB-medlemmar godkänner kriterier och roller.
-2. Kör go/no-go-gateway med dokumenterat beslutsunderlag.
-3. Genomför rollback-övning innan produktionsdatum.
-
-## Vidare läsning
+## Related Docs
 
 - [1. Cover & Snapshot](./01-cover-snapshot.md)
 - [2. Service Levels](./02-service-levels.md)

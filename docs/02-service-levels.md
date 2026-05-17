@@ -1,69 +1,44 @@
 # 2. Service Levels
 
-*Defines what “good enough” means before go-live.*
+*SLO/SLI baseline for go-live readiness.*
 
-## Varför
+## SLO Baseline
 
-Denna sida definierar vad som är tillräckligt bra kvalitet i drift innan produktion: svarstid, tillgänglighet, klassificering, eskalering och kunskapsuppdatering.
-Målen är satta för att spegla användarnas förväntan på snabb hjälp, NordIQ:s 24/7-positionering, riskerna med felklassificering samt behovet av snabb handover till IT Ops när AI:n inte kan lösa ett ärende.
-Detta innebär konkret:
-
-- p95-svarstid på 5 sekunder säkrar användarupplevelsen.
-- 99,5 % tillgänglighet ger en tydlig driftnivå för ett 24/7-löfte.
-- 90 % klassificering fungerar som miniminivå för att undvika för många felroutade ärenden.
-
-## Beslut / Krav
-
-- SLO ska vara mätbara via tydliga SLI:er.
-- Service Request-flödet ska följas från inkommen förfrågan till stängning.
-- OLA per steg ska vara beslutad och möjlig att följa upp.
-- Ärenden som AI inte kan lösa ska eskaleras snabbt till IT Ops.
-
-### Service Request Handling (operativ detalj)
-
-| Steg | Namn | Vad som händer hos NordTech |
+| SLI | Target SLO | Operational Intent |
 | :--- | :--- | :--- |
-| 1 | Submit | Medarbetaren skickar in ärendet via Teams, e-post eller webbportal. |
-| 2 | Triage | NordIQ klassificerar ärendet (FAQ, Incident, Request eller Change). |
-| 3 | Approve | Ärenden som kräver beslut skickas till rätt godkännare. |
-| 4 | Assign | Ärendet routas till AI, IT Ops, Incident/Change eller annan resolvergrupp. |
-| 5 | Fulfill | AI löser enkla ärenden, övriga hanteras enligt prioritet. |
-| 6 | Verify | Lösningen verifieras via användarbekräftelse eller kontroll. |
-| 7 | Close | Ärendet stängs och lärdom förs till Knowledge Base vid behov. |
+| AI response time | p95 <= 5 sec | Keep support interaction immediate |
+| Availability | 99.5% per month | Support 24/7 positioning |
+| Classification accuracy | >= 90% | Reduce incorrect routing |
+| Time to escalation | <= 2 min | Fast handover to IT Ops |
+| KB synchronization | <= 24h | Prevent outdated AI answers |
+
+## Service Request Handling
+
+| Step | Stage | Expected handling |
+| :--- | :--- | :--- |
+| 1 | Submit | Request enters via Teams, email, or portal |
+| 2 | Triage | NordIQ classifies FAQ/Incident/Request/Change |
+| 3 | Approve | Approval requested where policy requires |
+| 4 | Assign | Routed to AI, IT Ops, Incident, or Change track |
+| 5 | Fulfill | Resolution by AI or resolver team |
+| 6 | Verify | User or system confirms outcome |
+| 7 | Close | Ticket closes and learning is captured |
 
 ```mermaid
-flowchart LR
-    A["1. Submit"] --> B["2. Triage"]
-    B --> C["3. Approve"]
-    C --> D["4. Assign"]
-    D --> E["5. Fulfill"]
-    E --> F["6. Verify"]
-    F --> G["7. Close"]
+flowchart TB
+    A["1 Submit"] --> B["2 Triage"]
+    B --> C["3 Approve"]
+    C --> D["4 Assign"]
+    D --> E["5 Fulfill"]
+    E --> F["6 Verify"]
+    F --> G["7 Close"]
+
+    B -. "p95 <= 5s response" .-> E
+    D -. "Escalation <= 2 min" .-> E
+    G -. "KB update <= 24h" .-> H["Knowledge Base"]
 ```
 
-## Mätetal
-
-| Vad mäts (SLI) | Internt mål (SLO) | Rationale |
-| :--- | :--- | :--- |
-| AI-agentens svarstid | p95 inom 5 sekunder | Användare förväntar sig omedelbar hjälp. |
-| Tillgänglighet | 99,5 % per kalendermånad | Tjänsten ska fungera som 24/7-stöd. |
-| Korrekt klassificering | 90 % rätt kategoriserade | Felklassificering driver warranty-risk och fel eskalering. |
-| Tid till eskalering | Inom 2 minuter | Okända ärenden ska snabbt nå IT Ops. |
-| Knowledge Base-synk | Uppdaterad inom 24 timmar | Föråldrad kunskap ger felaktiga AI-svar. |
-
-## Ansvarig
-
-- **SLO-ägare:** Anna (IT Ops Lead)
-- **Teknisk leverans av mätdata:** Karl (Dev Lead)
-- **Uppföljning mot verksamhetsvärde:** Martin (CIO)
-
-## Nästa steg
-
-1. Säkerställ att mätdata kan tas ut för samtliga SLI:er.
-2. Verifiera att OLA-tiderna är förankrade hos IT Ops.
-3. Definiera rapporteringsrutin före och efter go-live.
-
-## Vidare läsning
+## Related Docs
 
 - [1. Cover & Snapshot](./01-cover-snapshot.md)
 - [3. Operational Readiness](./03-operational-readiness.md)
