@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NordIQ - ITIL i praktiken</title>
+<style>
+:root{
+  --navy:#0d1b2a;--navy2:#102033;--panel:#172a40;--panel2:#1e344d;
+  --gold:#f5a623;--teal:#0ea5e9;--green:#22c55e;--purple:#a78bfa;--red:#ef4444;
+  --white:#ffffff;--light:#c8dcf0;--muted:#87a0b8;--line:rgba(200,220,240,.22)
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--navy);color:var(--light);font-family:Calibri,Arial,sans-serif;overflow:hidden}
+.deck{height:100vh;width:100vw;position:relative}
+.slide{display:none;position:absolute;inset:0;padding:108px 66px 58px 88px;background:linear-gradient(135deg,var(--navy),#0b1827 58%,#0f2030);overflow:hidden}
+.slide.active{display:flex;flex-direction:column;justify-content:center}
+.bar{position:absolute;left:0;top:0;width:16px;height:100%;background:var(--gold)}
+.header{position:absolute;top:0;left:0;right:0;height:76px;padding-left:88px;background:var(--navy2);display:flex;align-items:center;color:var(--white);font-size:25px;font-weight:700}
+.kicker{color:var(--gold);font-weight:700;text-transform:uppercase;letter-spacing:4px;font-size:15px;margin-bottom:12px}
+.service-label{color:var(--gold);font-weight:700;text-transform:uppercase;letter-spacing:3px;font-size:15px;margin:0 0 14px}
+.title{font-size:58px;line-height:1;color:var(--white);font-weight:700;max-width:1000px}
+.hero-logo{width:min(980px,72vw);max-height:62vh;height:auto;margin:0 auto;display:block;background:transparent;border:0;box-shadow:none;filter:none;mix-blend-mode:normal;isolation:isolate}
+.cover-slide{background-image:url("NordIQ_Front.png");background-size:cover;background-position:center;background-repeat:no-repeat;padding:0}
+.dimension-img{display:block;width:100%;height:500px;object-fit:contain;object-position:center;margin:0 0 12px;border-radius:6px;border:1px solid rgba(200,220,240,.22);background:rgba(255,255,255,.025);padding:0}
+.thanks-slide{background:#000;padding:0;align-items:center;justify-content:center}
+.thanks-layout{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(1220px,88vw);display:flex;align-items:center;justify-content:center;gap:72px}
+.thanks-img{max-height:82vh;max-width:46vw;width:auto;height:auto;object-fit:contain;flex:0 1 auto}
+.thanks-contact{width:520px;flex:0 0 520px;background:rgba(167,139,250,.11);border-left:5px solid var(--purple);border-radius:6px;padding:34px 36px;color:var(--white);box-shadow:0 18px 40px rgba(0,0,0,.45)}
+.thanks-contact .label{color:var(--purple);font-weight:700;text-transform:uppercase;letter-spacing:3px;font-size:12px;margin-bottom:12px}
+.thanks-contact p{font-size:29px;line-height:1.34;margin:0}.thanks-contact strong{color:var(--white)}
+.subtitle{font-size:24px;line-height:1.35;max-width:980px;margin-top:20px}
+.section-title{font-size:48px;color:var(--white);line-height:1.05;margin-top:30px}
+.section-copy{font-size:25px;line-height:1.34;max-width:980px;margin-top:18px}
+.grid{display:grid;gap:16px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.split{display:grid;grid-template-columns:1.05fr .95fr;gap:24px;align-items:stretch}
+.card{background:rgba(255,255,255,.045);border-top:3px solid var(--teal);padding:18px 20px;border-radius:6px;box-shadow:0 10px 25px rgba(0,0,0,.18)}
+.card.info{cursor:pointer;transition:background .18s,border-color .18s,transform .18s,box-shadow .18s}
+.card.info:hover,.card.info.active{background:rgba(14,165,233,.14);border-color:var(--teal);transform:translateY(-2px);box-shadow:0 0 0 2px rgba(14,165,233,.7),0 14px 28px rgba(0,0,0,.26)}
+.card.info.gold:hover,.card.info.gold.active{background:rgba(245,166,35,.16);border-color:var(--gold);box-shadow:0 0 0 2px rgba(245,166,35,.78),0 14px 28px rgba(0,0,0,.26)}
+.card.info.green:hover,.card.info.green.active{background:rgba(34,197,94,.15);border-color:var(--green);box-shadow:0 0 0 2px rgba(34,197,94,.72),0 14px 28px rgba(0,0,0,.26)}
+.card.info.purple:hover,.card.info.purple.active{background:rgba(167,139,250,.15);border-color:var(--purple);box-shadow:0 0 0 2px rgba(167,139,250,.74),0 14px 28px rgba(0,0,0,.26)}
+.card.info.red:hover,.card.info.red.active{background:rgba(239,68,68,.14);border-color:var(--red);box-shadow:0 0 0 2px rgba(239,68,68,.74),0 14px 28px rgba(0,0,0,.26)}
+.card.gold{border-color:var(--gold)}.card.green{border-color:var(--green)}.card.purple{border-color:var(--purple)}.card.red{border-color:var(--red)}
+.card h3{margin:0 0 8px;color:var(--white);font-size:21px}.card p,.card li{font-size:17.5px;line-height:1.27;margin:0 0 7px}
+.service-level-grid .card{min-height:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:18px 20px}.service-level-grid .card h3{font-size:24px;margin:0;line-height:1.1}
+.value-img{width:100%;height:360px;object-fit:contain;display:block;border-radius:6px;border:1px solid rgba(200,220,240,.22);background:rgba(255,255,255,.025)}
+.utility-img{width:100%;height:430px;object-fit:cover;object-position:center;display:block;border-radius:6px;border:1px solid rgba(200,220,240,.22);background:rgba(255,255,255,.025)}
+.num{font-size:32px;font-weight:700;color:var(--gold);display:block;margin-bottom:5px}
+.pill{display:inline-block;border:1px solid var(--line);background:rgba(255,255,255,.045);color:var(--light);border-radius:999px;padding:7px 11px;margin:4px;font-size:16px}
+.quote{font-size:31px;line-height:1.24;color:var(--white);border-left:4px solid var(--teal);padding:22px 28px;background:rgba(14,165,233,.07);margin-top:22px}
+.service-definition-box{margin-top:-70px;margin-bottom:70px}
+.quote-label{display:block;color:var(--gold);font-size:13px;line-height:1;text-transform:uppercase;letter-spacing:3px;font-weight:700;margin-bottom:12px}
+.note{border-left:4px solid var(--gold);background:rgba(245,166,35,.08);padding:15px 19px;font-size:19px;line-height:1.32;margin-top:18px}
+.list{font-size:21px;line-height:1.34;margin:0}.list li{margin-bottom:9px}
+.flow{display:flex;align-items:center;gap:10px;margin-top:16px}.step{flex:1;background:rgba(14,165,233,.08);border:1px solid rgba(14,165,233,.55);padding:15px 10px;border-radius:6px;text-align:center;color:var(--white);font-size:17px;font-weight:700}.step.blue{background:rgba(59,130,246,.08);border-color:rgba(59,130,246,.62)}.step.teal{background:rgba(14,165,233,.08);border-color:rgba(14,165,233,.58)}.step.gold{background:rgba(245,166,35,.085);border-color:rgba(245,166,35,.62)}.step.red{background:rgba(239,68,68,.075);border-color:rgba(239,68,68,.58)}.step.purple{background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.62)}.step.green{background:rgba(34,197,94,.075);border-color:rgba(34,197,94,.58)}.step.pink{background:rgba(236,72,153,.08);border-color:rgba(236,72,153,.62)}.step.interactive{cursor:pointer;transition:background .18s,border-color .18s,transform .18s,box-shadow .18s}.step.interactive:hover,.step.interactive.active{background:rgba(14,165,233,.16);border-color:var(--teal);transform:translateY(-2px);box-shadow:0 0 0 2px rgba(14,165,233,.72),0 12px 22px rgba(0,0,0,.22)}.step.interactive.blue:hover,.step.interactive.blue.active{background:rgba(59,130,246,.16);border-color:#3b82f6;box-shadow:0 0 0 2px rgba(59,130,246,.72),0 12px 22px rgba(0,0,0,.22)}.step.interactive.gold:hover,.step.interactive.gold.active{background:rgba(245,166,35,.16);border-color:var(--gold);box-shadow:0 0 0 2px rgba(245,166,35,.74),0 12px 22px rgba(0,0,0,.22)}.step.interactive.red:hover,.step.interactive.red.active{background:rgba(239,68,68,.15);border-color:var(--red);box-shadow:0 0 0 2px rgba(239,68,68,.72),0 12px 22px rgba(0,0,0,.22)}.step.interactive.purple:hover,.step.interactive.purple.active{background:rgba(167,139,250,.16);border-color:var(--purple);box-shadow:0 0 0 2px rgba(167,139,250,.72),0 12px 22px rgba(0,0,0,.22)}.step.interactive.green:hover,.step.interactive.green.active{background:rgba(34,197,94,.15);border-color:var(--green);box-shadow:0 0 0 2px rgba(34,197,94,.72),0 12px 22px rgba(0,0,0,.22)}.step.interactive.pink:hover,.step.interactive.pink.active{background:rgba(236,72,153,.16);border-color:#ec4899;box-shadow:0 0 0 2px rgba(236,72,153,.72),0 12px 22px rgba(0,0,0,.22)}.arrow{color:var(--gold);font-size:29px}
+.detail-panel{margin-top:22px;background:rgba(255,255,255,.05);border-left:4px solid var(--gold);padding:18px 22px;border-radius:6px;min-height:130px}.detail-panel h3{margin:0 0 8px;color:var(--white);font-size:24px}.detail-panel p{margin:0 0 8px;font-size:19px;line-height:1.32}.detail-panel .tag{display:inline-block;color:var(--gold);font-weight:700;text-transform:uppercase;letter-spacing:2px;font-size:12px;margin-bottom:8px}
+.matrix{display:grid;grid-template-columns:1.05fr 1.35fr 1.35fr;gap:1px;background:var(--line);font-size:16px}.matrix div{background:var(--panel);padding:10px}.matrix .head{background:#1f4d78;color:var(--white);font-weight:700}
+.table4{grid-template-columns:1fr 1.1fr 1.25fr 1.35fr}.table5{grid-template-columns:.9fr 1.15fr 1.15fr 1.15fr 1.15fr}
+.person-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.person-card{background:rgba(255,255,255,.045);border-top:3px solid var(--teal);padding:12px;border-radius:6px;box-shadow:0 10px 25px rgba(0,0,0,.18);min-width:0;display:flex;flex-direction:column}
+.person-card.gold{border-color:var(--gold)}.person-card.green{border-color:var(--green)}.person-card.purple{border-color:var(--purple)}.person-card.red{border-color:var(--red)}
+.person-img{width:100%;height:clamp(340px,48vh,460px);object-fit:contain;object-position:center;border-radius:6px;border:1px solid rgba(200,220,240,.22);margin-bottom:10px;background:rgba(255,255,255,.05);flex:0 0 clamp(340px,48vh,460px)}
+.person-card h3{margin:0 0 4px;color:var(--white);font-size:18px}.person-role{color:var(--gold);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:7px}.person-card p{font-size:14px;line-height:1.22;margin:0 0 5px}
+.card-person{display:flex;gap:14px;align-items:center}.card-person .person-thumb{width:156px;height:208px;object-fit:contain;border-radius:6px;border:1px solid rgba(200,220,240,.25);background:rgba(255,255,255,.05);flex:0 0 156px}
+.cab-purpose-card{display:flex;gap:14px;align-items:center;justify-content:space-between}
+.cab-purpose-card .cab-copy{min-width:0;flex:1 1 48%}
+.cab-img{width:50%;height:170px;object-fit:cover;object-position:center;display:block;flex:0 0 50%;border-radius:6px;border:1px solid rgba(200,220,240,.25);background:rgba(255,255,255,.05)}
+.timeline{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:20px}.phase{border-top:4px solid var(--gold);background:rgba(255,255,255,.045);padding:16px;border-radius:6px;min-height:150px}.phase.teal{border-color:var(--teal);background:rgba(14,165,233,.075)}.phase.gold{border-color:var(--gold);background:rgba(245,166,35,.085)}.phase.red{border-color:var(--red);background:rgba(239,68,68,.075)}.phase.purple{border-color:var(--purple);background:rgba(167,139,250,.075)}.phase.green{border-color:var(--green);background:rgba(34,197,94,.075)}.phase.interactive{cursor:pointer;transition:background .18s,border-color .18s,transform .18s,box-shadow .18s}.phase.interactive:hover,.phase.interactive.active{background:rgba(245,166,35,.14);transform:translateY(-2px);box-shadow:0 0 0 2px rgba(245,166,35,.72),0 12px 22px rgba(0,0,0,.22)}.phase.interactive.teal:hover,.phase.interactive.teal.active{background:rgba(14,165,233,.16);box-shadow:0 0 0 2px rgba(14,165,233,.72),0 12px 22px rgba(0,0,0,.22)}.phase.interactive.red:hover,.phase.interactive.red.active{background:rgba(239,68,68,.15);box-shadow:0 0 0 2px rgba(239,68,68,.72),0 12px 22px rgba(0,0,0,.22)}.phase.interactive.purple:hover,.phase.interactive.purple.active{background:rgba(167,139,250,.16);box-shadow:0 0 0 2px rgba(167,139,250,.72),0 12px 22px rgba(0,0,0,.22)}.phase.interactive.green:hover,.phase.interactive.green.active{background:rgba(34,197,94,.15);box-shadow:0 0 0 2px rgba(34,197,94,.72),0 12px 22px rgba(0,0,0,.22)}.phase h3{margin:0 0 8px;color:var(--white);font-size:20px}.phase p{margin:0;font-size:17px;line-height:1.28}
+.callout{font-size:22px;color:var(--white);background:rgba(34,197,94,.08);border-left:4px solid var(--green);padding:18px 21px;margin-top:18px}
+.section-label{color:var(--gold);font-weight:700;text-transform:uppercase;letter-spacing:3px;font-size:12px;margin:0 0 10px}
+.section-divider{height:1px;background:rgba(200,220,240,.22);margin:18px 0 14px}
+.topic-divider{margin:38px 0 32px}
+.small{font-size:15px;color:var(--muted)}
+.controls{position:fixed;right:24px;bottom:20px;display:flex;gap:10px;align-items:center;z-index:20}.controls button{background:var(--panel);color:var(--white);border:1px solid var(--line);border-radius:5px;width:44px;height:38px;cursor:pointer;font-size:24px}.count{color:var(--muted);font-size:14px;min-width:64px;text-align:center}.progress{position:fixed;left:0;bottom:0;height:4px;background:var(--gold);z-index:20;transition:width .2s}
+@media(max-width:900px){body{overflow:auto}.slide{position:relative;min-height:100vh;padding:96px 28px 66px 44px;overflow:auto}.slide.active{justify-content:flex-start}.header{padding-left:44px;font-size:20px}.title{font-size:39px}.subtitle,.section-copy{font-size:19px}.section-title{font-size:36px}.g2,.g3,.g4,.split,.timeline,.matrix,.table4,.table5,.person-grid{grid-template-columns:1fr}.flow{flex-direction:column}.arrow{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+<main class="deck">
+
+<section class="slide active cover-slide"><div class="bar"></div></section>
+
+
+
+
+
+
+
+
+
+<section class="slide"><div class="bar"></div><div class="header">ITIL-flöde: från service value till go-live decision</div><div class="quote service-definition-box"><span class="quote-label">Service definition</span>NordIQ enables NordTech employees to get faster help with common IT support needs, without waiting for manual first-line handling or knowing where the issue should be routed.</div><div class="flow info-group" data-panel="itilDetail"><button class="step interactive blue active" data-info="itil-value">Service value</button><div class="arrow">›</div><button class="step interactive gold" data-info="itil-utility">Utility / warranty</button><div class="arrow">›</div><button class="step interactive purple" data-info="itil-slo">SLO / SLI</button><div class="arrow">›</div><button class="step interactive teal" data-info="itil-request">Request handling</button><div class="arrow">›</div><button class="step interactive red" data-info="itil-incident">Incident / problem</button><div class="arrow">›</div><button class="step interactive green" data-info="itil-change">Change decision</button></div><div class="detail-panel" id="itilDetail"><span class="tag">Service value</span><h3>Värde uppstår när nytta och risk hanteras samtidigt</h3><p>NordIQ ska minska väntetider och repetitiva tickets, men samtidigt introduceras AI-risk, leverantörsberoenden och krav på uppdaterad knowledgebase.</p><p><strong>Praktiskt:</strong> vi visar både risk/cost removed och risk/cost imposed.</p></div><div class="note">Varje begrepp kopplas till en praktisk fråga i NordIQ: värde, kvalitet, ansvar, avvikelse eller beslut.</div></section>
+
+
+
+<section class="slide"><div class="bar"></div><div class="header">Stakeholders: olika värden och risker</div><div class="person-grid"><div class="person-card gold"><img class="person-img" src="Anna%20Berg.png" alt="Anna Berg"><h3>Anna Berg</h3><div class="person-role">IT Ops Lead</div><p><strong>Vill:</strong> stabil drift och färre repetitiva ärenden.</p><p><strong>Oro:</strong> fel eskalering ökar second-line-belastningen.</p></div><div class="person-card purple"><img class="person-img" src="Kalle%20Eek.png" alt="Karl Eek"><h3>Karl Eek</h3><div class="person-role">Internal Dev Lead</div><p><strong>Vill:</strong> visa att AI-agentplattformen fungerar.</p><p><strong>Oro:</strong> plattformen får skulden om svaren blir fel.</p></div><div class="person-card"><img class="person-img" src="Martin%20Lindqvist.png" alt="Martin Lindqvist"><h3>Martin Lindqvist</h3><div class="person-role">CIO</div><p><strong>Vill:</strong> board-ready story och Q4-besparing.</p><p><strong>Oro:</strong> politiskt ansvar om go-live fallerar.</p></div><div class="person-card green"><img class="person-img" src="Erik%20Holm.png" alt="Erik Holm"><h3>Erik Holm</h3><div class="person-role">CFO</div><p><strong>Vill:</strong> förutsägbara kostnader och kontrollerade leverantörer.</p><p><strong>Oro:</strong> tokenkostnader och CloudFrame/Lumeon-beroenden.</p></div><div class="person-card red"><img class="person-img" src="Lina_Nordin.png" alt="Lina Nordin"><h3>Lina Nordin</h3><div class="person-role">Head of HR</div><p><strong>Vill:</strong> snabb onboarding och snabb hjälp.</p><p><strong>Oro:</strong> fel access eller fel instruktioner.</p></div></div></section>
+
+<section class="slide"><div class="bar"></div><div class="header">Service Value - Value statement - Cost and Risk for Stakeholders</div><div class="grid g2"><div class="card green"><img class="value-img" src="Removed.png" alt="Risk/cost removed"></div><div class="card red"><img class="value-img" src="Imposed.png" alt="Risk/cost imposed"></div></div><div class="note">I praktiken betyder ITIL-värde inte bara “ny funktion”. Det betyder att vi synliggör både vinsten och priset för varje stakeholder.</div></section>
+
+<section class="slide"><div class="bar"></div><div class="header">Utility & Warranty</div><div class="grid g2"><div class="card green"><img class="utility-img" src="Utility.png" alt="Utility"></div><div class="card purple"><img class="utility-img" src="Warranty.png" alt="Warranty"></div></div><div class="callout">NordIQ kan ha stark utility men svag warranty: den kan vara smart, men ändå farlig att släppa om den inte går att mäta, eskalera och stoppa.</div></section>
+
+<section class="slide"><div class="bar"></div><div class="header">Four Dimensions</div><div class="grid g4 info-group" data-panel="dimensionDetail"><div class="card info gold active" data-info="dim-people"><img class="dimension-img" src="Org.png" alt="Organizations and People"><p>Vem äger AI-agentens svar? Hur påverkas Anna, Karl och service desk-teamet?</p></div><div class="card info" data-info="dim-tech"><img class="dimension-img" src="Info.png" alt="Information and Technology"><p>AI-agent, Lumeon API, knowledgebase, FAQ, ticketing och övervakning.</p></div><div class="card info purple" data-info="dim-partners"><img class="dimension-img" src="Partner.png" alt="Partners and Suppliers"><p>CloudFrame Nordic och Lumeon API är leverantörer som kan stoppa tjänsten.</p></div><div class="card info green" data-info="dim-process"><img class="dimension-img" src="Value.png" alt="Value Streams and Processes"><p>Från medarbetarens fråga till lösning, eskalering, failover och lärande.</p></div></div><div class="detail-panel" id="dimensionDetail"><span class="tag">Organizations & People</span><h3>Roller och ansvar måste vara tydliga innan go-live</h3><p>Anna ärver driften, Karl förstår tekniken, Martin äger beslutet och Lina representerar tung användning. En öppen fråga är vem som äger kvaliteten i AI-agentens svar.</p><p><strong>Risk:</strong> om ansvar är otydligt blir felaktiga AI-svar svåra att hantera.</p></div></section>
+
+<section class="slide"><div class="bar"></div><div class="header">Service Levels</div><div class="grid g4 info-group service-level-grid" data-panel="sloDetail"><div class="card info gold active" data-info="slo-response"><h3>Svarstid</h3></div><div class="card info" data-info="slo-uptime"><h3>Uptime</h3></div><div class="card info purple" data-info="slo-classification"><h3>Klassificering</h3></div><div class="card info green" data-info="slo-escalation"><h3>Eskalering</h3></div></div><div class="detail-panel" id="sloDetail"><span class="tag">SLO vs SLI</span><h3>SLO &auml;r m&aring;let, SLI &auml;r m&auml;tningen</h3><p>SLO beskriver vilken niv&aring; NordIQ ska n&aring;. SLI &auml;r den faktiska data som visar om m&aring;let uppn&aring;s, till exempel svarstid, upptid eller klassificeringstr&auml;ff.</p><p><strong>NordIQ-koppling:</strong> warranty blir konkret f&ouml;rst n&auml;r den kan m&auml;tas och f&ouml;ljas upp.</p></div></section>
+
+
+
+<section class="slide"><div class="bar"></div><div class="header">Service Request Handling</div><div class="flow request-flow"><button class="step interactive blue active" data-step="submit">Submit</button><div class="arrow">›</div><button class="step interactive gold" data-step="triage">Triage</button><div class="arrow">›</div><button class="step interactive purple" data-step="approve">Approve</button><div class="arrow">›</div><button class="step interactive teal" data-step="assign">Assign</button><div class="arrow">›</div><button class="step interactive green" data-step="fulfill">Fulfill</button><div class="arrow">›</div><button class="step interactive red" data-step="verify">Verify</button><div class="arrow">›</div><button class="step interactive blue" data-step="close">Close</button></div><div class="detail-panel" id="requestDetail"><span class="tag">Submit</span><h3>Medarbetaren skickar in ärendet</h3><p>En användare kontaktar NordIQ via Teams, e-post eller webbportal. Ärendet registreras direkt så det finns spårbarhet från första kontakt.</p><p><strong>NordIQ-exempel:</strong> en ny medarbetare behöver åtkomst till ett verktyg.</p></div><div class="note">Interaktionen visar var mätning, ansvar, eskalering och lärande sker i ett vanligt service request-flöde.</div></section>
+
+<section class="slide"><div class="bar"></div><div class="header">Incident, Problem, Change och Major Incident Playbook</div><div class="section-label">ITIL-begrepp: tre olika typer av styrning</div><div class="grid g3"><div class="card red"><h3>Incident</h3><p><strong>Fr&aring;gan:</strong> vad g&ouml;r vi n&auml;r tj&auml;nsten &auml;r st&ouml;rd just nu?</p><p><strong>NordIQ:</strong> Lumeon API svarar inte, AI-chatten ligger nere eller eskalering fungerar inte.</p></div><div class="card gold"><h3>Problem</h3><p><strong>Fr&aring;gan:</strong> varf&ouml;r h&auml;nder detta &aring;terkommande och hur tar vi bort orsaken?</p><p><strong>NordIQ:</strong> klassificeringen sjunker under 85 % tre veckor i rad eller failover anv&auml;nds f&ouml;r ofta.</p></div><div class="card purple"><h3>Change</h3><p><strong>Fr&aring;gan:</strong> hur kontrollerar vi &auml;ndringar s&aring; att vi inte skapar ny risk?</p><p><strong>NordIQ:</strong> ny version av AI-agenten, &auml;ndrad routing eller ny knowledgebase-release.</p></div></div><div class="section-divider topic-divider"></div><div class="section-label">NordIQ-praktik: handlingsplan vid stor incident</div><div class="grid g3"><div class="card red"><h3>Major incident playbook</h3><p>N&auml;r p&aring;verkan &auml;r bred blir m&aring;let att snabbt skydda anv&auml;ndarna och &aring;terst&auml;lla supportfl&ouml;det.</p></div><div class="card gold"><h3>Viktigaste beslutet</h3><p>Ska AI-chatten st&auml;ngas av helt eller ska emergency redirect till SharePoint FAQ och manuell ticket aktiveras?</p></div><div class="card"><h3>Roller</h3><p>Incident Commander koordinerar. Karl &auml;r technical lead. Lina kan vara communications lead. Anna/Ops driver triage.</p></div></div><div class="note">Tydlig skillnad: Incident, Problem och Change &auml;r olika ITIL-perspektiv. Major Incident Playbook &auml;r hur NordTech agerar praktiskt n&auml;r NordIQ orsakar bred p&aring;verkan.</div></section>
+
+
+
+<section class="slide"><div class="bar"></div><div class="header">Incidentflödet</div><div class="timeline info-group" data-panel="incidentFlowDetail"><div class="phase interactive teal active" data-info="inc-identify"><h3>1. Identifiering</h3><p>Larm från övervakning eller användare, till exempel Lina som märker felaktiga svar.</p></div><div class="phase interactive gold" data-info="inc-triage"><h3>2. Triage</h3><p>Bedöm påverkan och deklarera Major Incident vid bred effekt.</p></div><div class="phase interactive red" data-info="inc-failover"><h3>3. Failover</h3><p>Stäng AI-chatten eller styr om till SharePoint FAQ och manuell ticket.</p></div><div class="phase interactive purple" data-info="inc-supplier"><h3>4. Leverantör</h3><p>Kontakta CloudFrame eller Lumeon om deras komponent misstänks.</p></div><div class="phase interactive green" data-info="inc-clear"><h3>5. All-clear</h3><p>Verifiera normal funktion och informera organisationen.</p></div></div><div class="detail-panel" id="incidentFlowDetail"><span class="tag">Identifiering</span><h3>Störningen upptäcks</h3><p>Incidenten kan börja med larm från övervakning eller med att Lina/HR märker att AI:n ger felaktiga svar i onboardingflödet.</p><p><strong>Praktiskt:</strong> första frågan är om det är en isolerad fråga eller bred påverkan på first-line-flödet.</p></div></section>
+
+
+<section class="slide"><div class="bar"></div><div class="header">Problem management, Post-Incident Review, och Continual improvement</div><div class="grid g3"><div class="card gold"><div class="section-label">Problem management</div><h3>Hitta grundorsaken</h3><p><strong>När?</strong> Efter incidenter som återkommer, har oklar orsak eller visar mönster.</p><p><strong>NordIQ:</strong> failover används flera gånger, klassificering sjunker eller routing blir fel.</p></div><div class="card purple"><div class="section-label">Post-Incident Review</div><h3>Granska vad som hände</h3><p><strong>När?</strong> När tjänsten är stabil igen och teamet kan analysera utan akut stress.</p><p><strong>Frågor:</strong> Vad hände? Varför hände det? Vad fungerade bra och dåligt?</p></div><div class="card green"><div class="section-label">Continual improvement</div><h3>Gör lärandet till arbete</h3><p><strong>När?</strong> När Post-Incident Review och RCA har visat vad som behöver ändras.</p><p><strong>Resultat:</strong> förbättringar får ägare, status, förväntat utfall och granskningsdatum.</p></div></div><div class="section-divider"></div><div class="grid g3"><div class="card"><h3>Metoder</h3><p>5 Whys passar enklare fel. Contributing Factors passar när AI-agent, knowledgebase, routing, människor och leverantörer samverkar.</p></div><div class="card"><h3>Regler</h3><p>Problem-ticket kräver länkade incidents. Workarounds ska ha bäst-före-datum. Failover fler än två gånger på 30 dagar öppnar problem-ticket.</p></div><div class="card"><h3>Exempel</h3><p>Om AI gav fel onboarding-svar kan förbättringen bli: uppdatera knowledgebase, testa klassificering och följa SLI-trend.</p></div></div><div class="note">Kopplingen: Problem management förklarar orsaken, Post-Incident Review fångar lärandet, och continual improvement gör lärandet till en konkret ändring i NordIQ.</div></section>
+
+<section class="slide"><div class="bar"></div><div class="header">On-call & Escalation Map + Change & Release</div><div class="split"><div><div class="section-label">On-call & Escalation Map</div><div class="grid"><div class="card red"><h3>Akut driftansvar</h3><p><strong>Innehåller:</strong> SEV1/SEV2, war room inom 15 minuter och uppdatering till Incident Commander var 30:e minut.</p></div><div class="card gold"><h3>Roller i incidenten</h3><p><strong>Innehåller:</strong> Incident Commander, Communications Lead, SME, Scribe och Customer Liaison.</p></div><div class="card"><h3>NordIQ-koppling</h3><p>AI-incidenter kan påverka många användare snabbt och kräver teknik, drift, kommunikation och leverantörskontakt.</p></div></div></div><div><div class="section-label">Change & Release</div><div class="grid"><div class="card purple"><h3>Kontrollerad förändring</h3><p><strong>Innehåller:</strong> RFC för go-live med scope, teknisk ändring, riskbedömning, rollback, timeline och approver list.</p></div><div class="card"><h3>CAB-underlag</h3><p><strong>Innehåller:</strong> beslutsunderlag till Martin, inte ett ersättande av Martins ansvar.</p></div><div class="card green"><h3>Release-beslut</h3><p>Change Enablement kontrollerar risk så NordIQ inte bara kan byggas, utan släppas på ett ansvarsfullt sätt.</p></div></div></div></div><div class="note">Skillnaden: On-call & Escalation Map används när något är akut. Change & Release används när NordIQ ska ändras, släppas eller godkännas kontrollerat.</div></section>
+
+<section class="slide"><div class="bar"></div><div class="header">CAB: varför sitter just de här personerna i rummet?</div><div class="grid g3 info-group" data-panel="cabDetail"><div class="card info gold active card-person" data-info="cab-martin"><img class="person-thumb" src="Martin%20Lindqvist.png" alt="Martin Lindqvist"><div><h3>Martin, CIO</h3><p>Beslut och politisk risk.</p></div></div><div class="card info card-person" data-info="cab-anna"><img class="person-thumb" src="Anna%20Berg.png" alt="Anna Berg"><div><h3>Anna, IT Ops</h3><p>Drift, eskalering och second-line.</p></div></div><div class="card info purple card-person" data-info="cab-karl"><img class="person-thumb" src="Kalle%20Eek.png" alt="Karl Eek"><div><h3>Karl, Dev</h3><p>Teknisk risk och AI-agentens beteende.</p></div></div><div class="card info green card-person" data-info="cab-erik"><img class="person-thumb" src="Erik%20Holm.png" alt="Erik Holm"><div><h3>Erik, CFO</h3><p>Leverantörer och kostnad.</p></div></div><div class="card info card-person" data-info="cab-lina"><img class="person-thumb" src="Lina_Nordin.png" alt="Lina Nordin"><div><h3>Lina, HR</h3><p>Användarvärde och onboarding.</p></div></div><div class="card info red cab-purpose-card" data-info="cab-purpose"><img class="cab-img" src="CAB.png" alt="CAB"><div class="cab-copy"><h3>CAB:s syfte</h3><p>Ge Martin ett komplett beslutsunderlag.</p></div></div></div><div class="detail-panel" id="cabDetail"><span class="tag">Martin, CIO</span><h3>Change Authority och ägare av go/no-go</h3><p>Martin bär den politiska risken uppåt och behöver en board-ready berättelse: värde, risk, driftbarhet och rollback.</p><p><strong>Beslutsfråga:</strong> vågar NordTech gå live med NordIQ nu?</p></div></section>
+
+<section class="slide"><div class="bar"></div><div class="header">Go/no-go criterias</div><div class="grid g3"><div class="card green"><h3>Teknisk hälsa</h3><p>Gröna health checks i 24 sammanhängande timmar.</p></div><div class="card gold"><h3>AI-kvalitet</h3><p>Mindre än 5 procent av test-promptar får returnera felmeddelande.</p></div><div class="card"><h3>Driftacceptans</h3><p>P2/P3-plan godkänd av IT Ops och normalflöden testade i kvalitetssäkrad miljö.</p></div><div class="card purple"><h3>Governance</h3><p>Skriftligt godkännande från CAB.</p></div><div class="card red"><h3>Riskkontroll</h3><p>Rollback-plan, fallback och incident playbook ska vara klara.</p></div><div class="card"><h3>Beslut</h3><p>Martin som Change Authority gör slutligt go/no-go.</p></div></div></section>
+
+<section class="slide"><div class="bar"></div><div class="header">Rollback plan</div><div class="grid g3 info-group" data-panel="rollbackDetail"><div class="card info red active" data-info="roll-trigger"><h3>Triggers</h3><p>När ska rollback övervägas?</p></div><div class="card info gold" data-info="roll-steps"><h3>Rollback steps</h3><p>Hur pausas NordIQ säkert?</p></div><div class="card info green" data-info="roll-stays"><h3>What stays</h3><p>Vad behålls för analys?</p></div><div class="card info" data-info="roll-restores"><h3>What restores</h3><p>Vad återgår till tidigare läge?</p></div><div class="card info purple" data-info="roll-communication"><h3>Communication</h3><p>Vem måste informeras?</p></div><div class="card info" data-info="roll-learning"><h3>Learning</h3><p>Hur blir rollback input till förbättring?</p></div></div><div class="detail-panel" id="rollbackDetail"><span class="tag">Triggers</span><h3>Rollback ska inte vara en magkänsla</h3><p>Exempel: mer än 10 procent av ärenden får ingen respons, Lumeon är nere över 30 minuter, felklassificering över accepterad nivå eller eskalering till IT Ops slutar fungera.</p><p><strong>Praktiskt:</strong> kriterierna gör att Martin kan fatta beslut snabbt när tjänsten påverkar supportflödet.</p></div></section>
+
+
+
+<section class="slide"><div class="bar"></div><div class="header">Sammanfattning: fyra slutsatser</div><div class="grid g2"><div class="card gold"><h3>1. Tänk tjänst, inte system</h3><p>NordIQ är en service desk-tjänst med användare, värde, ansvar och risker.</p></div><div class="card"><h3>2. Gör kvalitet mätbar</h3><p>Warranty blir konkret först när den kopplas till SLO/SLI.</p></div><div class="card green"><h3>3. Planera för fel</h3><p>Incident, problem, Post-Incident Review och continual improvement visar hur tjänsten förbättras efter störningar.</p></div><div class="card purple"><h3>4. Beslut kräver governance</h3><p>CAB, go/no-go och rollback gör att go-live inte bygger på magkänsla.</p></div></div><div class="quote">Med ITIL blir NordIQ mer än en AI-lösning: en tjänst som kan mätas, styras, förbättras och släppas kontrollerat.</div></section>
+
+<section class="slide thanks-slide"><div class="thanks-layout"><img class="thanks-img" src="Tack.png" alt="Tack"><div class="thanks-contact"><div class="label">Kontakt</div><p>För frågor, maila Karl Eek på <strong>devopskalle@nordiq.se</strong></p></div></div></section>
+
+</main>
+<div class="controls"><button id="prev" aria-label="Föregående">‹</button><span class="count" id="count"></span><button id="next" aria-label="Nästa">›</button></div>
+<div class="progress" id="progress"></div>
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+let i=0;
+const count=document.getElementById('count');
+const progress=document.getElementById('progress');
+function show(n){
+  slides[i].classList.remove('active');
+  i=(n+slides.length)%slides.length;
+  slides[i].classList.add('active');
+  count.textContent=(i+1)+' / '+slides.length;
+  progress.style.width=((i+1)/slides.length*100)+'%';
+}
+document.getElementById('next').onclick=()=>show(i+1);
+document.getElementById('prev').onclick=()=>show(i-1);
+window.addEventListener('keydown',e=>{
+  if(['ArrowRight','PageDown',' ','n','N'].includes(e.key)) show(i+1);
+  if(['ArrowLeft','PageUp','p','P'].includes(e.key)) show(i-1);
+});
+const infoContent={
+  'agenda-case':['Case','Utgångspunkten är ett verkligt driftproblem','NordTech har en belastad first-line service desk och vill införa NordIQ som AI-stött internt supportflöde.','Praktisk koppling: innan vi kan prata ITIL måste vi veta vilket verksamhetsproblem tjänsten ska lösa.'],
+  'agenda-snapshot':['Snapshot','Tjänsten definieras innan den styrs','Här beskriver vi NordIQ på service-språk: användare, stakeholders, värde, utility/warranty och fyra dimensioner.','Praktisk koppling: snapshot gör att alla senare artefakter handlar om samma tjänst.'],
+  'agenda-levels':['Service levels','Warranty blir mätbar','Vi översätter kvalitet till SLO/SLI: svarstid, uptime, klassificering, eskalering och knowledgebase-synk.','Praktisk koppling: målen visar när NordIQ är tillräckligt bra för intern drift.'],
+  'agenda-readiness':['Readiness','Drift och felhantering görs konkret','Här visar vi major incident playbook, kommunikationsplan, problem management, PIR, förbättringsregister och on-call.','Praktisk koppling: tjänsten måste kunna hanteras även när AI-agenten eller leverantören fallerar.'],
+  'agenda-change':['Change','Go-live blir ett kontrollerat beslut','RFC, CAB, go/no-go-kriterier och rollback visar hur NordIQ kan släppas och tas tillbaka säkert.','Praktisk koppling: Martin kan fatta beslut med synlig risk, inte magkänsla.'],
+  'pkg-snapshot':['Cover & Snapshot','Grunden för resten av arbetet','Här definieras NordIQ som tjänst: vem den hjälper, vilket värde den skapar, vilka risker den flyttar och vilka dimensioner som måste fungera.','NordIQ-koppling: utan snapshot blir SLO:er och incidentplaner lösryckta från tjänstens syfte.'],
+  'pkg-levels':['Service Levels','Vad betyder good enough?','Vi har mål för svarstid, tillgänglighet, klassificering, eskalering och knowledgebase-synk. Varje mål har en mätning och ett rationale.','NordIQ-koppling: warranty blir konkret och kan följas upp efter go-live.'],
+  'pkg-readiness':['Operational Readiness','Så drivs tjänsten när något händer','Vi har beskrivit major incident playbook, kommunikation, problem management, PIR, improvement register och on-call/escalation map.','NordIQ-koppling: AI-agenten kan gå fel, därför behövs failover, roller och leverantörskontakt.'],
+  'pkg-change':['Change & Release','Så kontrolleras go-live','RFC beskriver förändringen, CAB ger beslutsunderlag, go/no-go-kriterier sätter trösklar och rollback-planen beskriver vägen tillbaka.','NordIQ-koppling: AI-supporten påverkar hela interna supportmodellen och behöver governance.'],
+  'pkg-reflection':['Reflection','Det som behöver fyllas med gruppens egna lärdomar','Uppgiften efterfrågar reflektion kring vokabulär, översättning mellan sidor, governance och vad som skulle göras annorlunda.','NordIQ-koppling: den delen ska komma från er faktiska arbetsprocess, inte hittas på i efterhand.'],
+  'pkg-output':['Slutprodukt','Ett sammanhållet go-live-underlag','Paketet visar tjänstens värde, driftbarhet, risker, mätning, incidentberedskap och beslutsmodell.','NordIQ-koppling: CIO och CAB ska kunna förstå om NordIQ är redo för produktion.'],
+  'itil-value':['Service value','Värde uppstår när nytta och risk hanteras samtidigt','NordIQ ska minska väntetider och repetitiva tickets, men introducerar AI-risk, leverantörsberoenden och krav på uppdaterad knowledgebase.','Praktiskt: vi visar både risk/cost removed och risk/cost imposed.'],
+  'itil-utility':['Utility / Warranty','Vad tjänsten gör och hur pålitligt den gör det','Utility är snabb självbetjäning, triage och insikter. Warranty är tillgänglighet, kontinuitet, korrekt information och eskalering.','Praktiskt: en smart AI-agent är inte releasebar om den inte är pålitlig.'],
+  'itil-slo':['SLO / SLI','Kvalitet blir mål och mätning','SLO är målet, exempelvis p95-svar inom 5 sekunder. SLI är den faktiska mätningen från systemet.','Praktiskt: NordIQ kan följas upp med data i stället för upplevelser.'],
+  'itil-request':['Request handling','Det normala flödet blir styrbart','Submit, triage, approve, assign, fulfill, verify och close visar hur ett supportbehov rör sig genom tjänsten.','Praktiskt: varje steg får ansvar, mätpunkt eller eskaleringsväg.'],
+  'itil-incident':['Incident / Problem','Akut fel och återkommande orsak skiljs åt','Incident hanterar störningen här och nu. Problem management undersöker varför felet återkommer och hur det ska förebyggas.','Praktiskt: Lumeon-avbrott är incident; återkommande klassificeringsfall är problem.'],
+  'itil-change':['Change decision','Go-live behöver styrning','Change enablement samlar risk, test, CAB, go/no-go och rollback till ett kontrollerat beslut.','Praktiskt: Martin kan godkänna go-live med tydliga kriterier.'],
+  'dim-people':['Organizations & People','Roller och ansvar måste vara tydliga innan go-live','Anna ärver driften, Karl förstår tekniken, Martin äger beslutet och Lina representerar tung användning. En öppen fråga är vem som äger kvaliteten i AI-agentens svar.','Risk: om ansvar är otydligt blir felaktiga AI-svar svåra att hantera.'],
+  'dim-tech':['Information & Technology','Tekniken är mer än AI-modellen','NordIQ består av AI-agent, Lumeon API, internal knowledgebase, FAQ, ticketing, eskalering och övervakning.','Risk: föråldrad knowledgebase ger felaktiga svar även om modellen fungerar.'],
+  'dim-partners':['Partners & Suppliers','Leverantörer blir del av tjänstens warranty','CloudFrame Nordic hostar plattformen och Lumeon API levererar LLM-lagret. Om någon är nere påverkas NordIQ direkt.','Risk: beroenden behöver incidentvägar, statuskontroll och CFO-synlighet.'],
+  'dim-process':['Value Streams & Processes','Flödet visar hur värde skapas steg för steg','Medarbetarens fråga går via NordIQ till direkt svar, eskalering, failover och lärande.','Risk: om processen saknas blir AI-svaret isolerat från supportorganisationen.'],
+  'slo-response':['Svarstid','p95 ska få svar inom 5 sekunder','SLI mäter faktisk tid från inkommande fråga till första AI-svar. SLO:t finns eftersom användaren förväntar sig omedelbar hjälp.','NordIQ-koppling: om AI:n känns långsam försvinner en stor del av nyttan jämfört med vanlig supportkö.'],
+  'slo-uptime':['Uptime','99,5 procent tillgänglighet per kalendermånad','SLI mäter faktisk upptid. Målet matchar att NordIQ positioneras som 24/7-stöd.','NordIQ-koppling: 99,5 procent ger ungefär 3,6 timmar tolererat avbrott per månad.'],
+  'slo-classification':['Klassificering','90 procent rätt kategoriserade ärenden','SLI mäter hur ofta NordIQ klassificerar FAQ, incident, request eller change korrekt.','NordIQ-koppling: fel väg skapar nya risker och kan öka belastningen på IT Ops.'],
+  'slo-escalation':['Eskalering','Okända ärenden ska vidare inom 2 minuter','SLI mäter tiden från inkommet ärende till ticket/eskalering när AI inte kan hantera frågan.','NordIQ-koppling: Anna och IT Ops ska fånga upp det AI-agenten inte löser innan användaren fastnar.'],
+  'inc-identify':['Identifiering','Störningen upptäcks','Incidenten kan börja med larm från övervakning eller med att Lina/HR märker att AI:n ger felaktiga svar i onboardingflödet.','Praktiskt: första frågan är om det är isolerat eller bred påverkan på first-line-flödet.'],
+  'inc-triage':['Triage','Påverkan och severity bedöms','Incident Commander bedömer om detta påverkar många användare, kritiska flöden eller leverantörsberoenden.','Praktiskt: vid bred effekt deklareras Major Incident och war room samlas.'],
+  'inc-failover':['Failover','Tjänsten görs säker medan felet hanteras','Det viktigaste NordIQ-beslutet är om AI-chatten ska stängas eller om emergency redirect till SharePoint FAQ och manuell ticket ska aktiveras.','Praktiskt: failover skyddar användaren från felaktiga AI-svar.'],
+  'inc-supplier':['Leverantör','CloudFrame eller Lumeon kontaktas vid misstänkt beroendefel','IT-PM/ansvarig öppnar akut-ticket, samlar symptom och kopplar Erik om avtals- eller kostnadsrisk finns.','Praktiskt: NordIQ kan inte återställas om beroendet är nere och ingen eskalering sker.'],
+  'inc-clear':['All-clear','Normal funktion verifieras och kommuniceras','Technical lead verifierar att tjänsten fungerar normalt igen. Communications Lead skickar all-clear till berörda användare.','Praktiskt: efteråt ska PIR och förbättringsregister fånga lärandet.'],
+  'cab-martin':['Martin, CIO','Change Authority och ägare av go/no-go','Martin bär den politiska risken uppåt och behöver en board-ready berättelse: värde, risk, driftbarhet och rollback.','Beslutsfråga: vågar NordTech gå live med NordIQ nu?'],
+  'cab-anna':['Anna, IT Ops','Driftbarhet och vardagsansvar','Anna ärver NordIQ efter go-live och bedömer incidenthantering, eskalering, second-line-belastning och underhållbarhet.','Beslutsfråga: går tjänsten att driva utan att IT Ops överbelastas?'],
+  'cab-karl':['Karl, Dev','Teknisk risk och AI-agentens gränser','Karl förklarar integrationsrisker, AI-agentens beteende, plattformens begränsningar och hur snabbt teamet kan åtgärda fel.','Beslutsfråga: vet vi vad systemet klarar och inte klarar?'],
+  'cab-erik':['Erik, CFO','Leverantörer och run-rate','Erik äger relationen till CloudFrame och Lumeon och behöver synlighet i hosting, tokenkostnader och avtalsrisk.','Beslutsfråga: är kostnader och leverantörsberoenden kontrollerade?'],
+  'cab-lina':['Lina, HR','Användarvärde och adoption','Lina representerar en tung intern användare, särskilt onboarding och accessrelaterade ärenden.','Beslutsfråga: löser NordIQ verkliga problem i vardagen?'],
+  'cab-purpose':['CAB:s syfte','CAB ersätter inte beslutsägaren','CAB:s roll är att ge Martin ett tillräckligt komplett underlag, inte att ta över hans ansvar.','Beslutsfråga: är risker, kriterier och rollback tydliga nog?'],
+  'roll-trigger':['Triggers','Rollback ska inte vara en magkänsla','Exempel: mer än 10 procent av ärenden får ingen respons, Lumeon är nere över 30 minuter, felklassificering över accepterad nivå eller eskalering till IT Ops slutar fungera.','Praktiskt: kriterierna gör att Martin kan fatta beslut snabbt när tjänsten påverkar supportflödet.'],
+  'roll-steps':['Rollback steps','Så pausas NordIQ kontrollerat','Martin godkänner rollback, NordIQ sätts inaktivt, inkommande ärenden styrs till SharePoint FAQ och befintligt ticketing-system, och IT Ops tar tillbaka manuell first-line.','Praktiskt: AI-agenten slutar påverka användare medan tjänsten stabiliseras.'],
+  'roll-stays':['What stays','Det som sparas för analys','Agentplattformen finns kvar men är inaktiv. Ärendehistorik, data, avtal, dokumentation, loggar och incidentdata bevaras.','Praktiskt: teamet kan analysera felet utan att förlora spårbarhet.'],
+  'roll-restores':['What restores','Det gamla supportflödet aktiveras igen','Manuell first-line återtas, SharePoint FAQ blir primär självservicekälla och befintligt ärendehanteringssystem används för nya tickets.','Praktiskt: användare får support även när NordIQ är pausat.'],
+  'roll-communication':['Communication','Användare och stakeholders får tydlig väg framåt','Lina, HR och medarbetare informeras om att NordIQ är pausat och hur de får support under tiden. Martin och Anna får besluts- och driftstatus.','Praktiskt: kommunikationen minskar osäkerhet och felanvändning.'],
+  'roll-learning':['Learning','Rollback blir input till problem management','Efter rollback ska incidentdata, loggar och användarpåverkan användas i PIR, RCA och continual improvement-register.','Praktiskt: målet är inte bara att återställa, utan att kunna återaktivera NordIQ säkrare.'],
+  'chain-definition':['Service definition','Allt börjar med vad NordIQ är till för','Tjänsten ska ge NordTechs medarbetare snabbare hjälp med vanliga IT-supportbehov utan att de behöver vänta på manuell first-line eller förstå routing.','Kedjan: om tjänsten är otydlig blir även värde, SLO, incidentberedskap och go-live-beslut otydliga.'],
+  'chain-stakeholder':['Stakeholder risk','Värde och risk skiljer sig per roll','Lina vill ha snabb onboarding, Anna vill ha stabil drift, Erik vill kontrollera kostnader, Karl vill bevisa plattformen och Martin vill minska politisk risk.','Kedjan: stakeholder-risker avgör vad readiness måste bevisa.'],
+  'chain-warranty':['Utility / warranty','Nytta räcker inte utan tillförlitlighet','NordIQ kan lösa FAQ-frågor och triage, men måste också vara tillgänglig, korrekt, kontinuerlig och eskalerbar.','Kedjan: warranty blir grunden för SLO:er och incidentplan.'],
+  'chain-slo':['SLO / SLI','Kvalitet görs observerbar','Svarstid, uptime, klassificering, eskalering och knowledgebase-synk visar om NordIQ håller sitt löfte.','Kedjan: utan mätning går det inte att fatta tryggt go/no-go.'],
+  'chain-ops':['Operations','Driftberedskap visar hur tjänsten hanteras','Major incident playbook, kommunikationsplan, problem management, PIR, förbättringsregister och on-call beskriver vardag och kris.','Kedjan: operations visar att tjänsten går att äga efter release.'],
+  'chain-cab':['CAB','Beslutet får rätt perspektiv','Martin, Anna, Karl, Erik och Lina väger beslut, drift, teknik, kostnad och användarvärde.','Kedjan: CAB samlar bevisen till ett go/no-go-beslut.'],
+  'chain-golive':['Go-live','Release sker med kriterier och rollback','Go-live tillåts först när kriterier är uppfyllda och rollback är möjlig om NordIQ skadar supportflödet.','Kedjan: slutpunkten är inte lansering till varje pris, utan kontrollerad produktion.']
+};
+function renderInfo(panelId,item){
+  const panel=document.getElementById(panelId);
+  if(!panel || !item) return;
+  panel.innerHTML=`<span class="tag">${item[0]}</span><h3>${item[1]}</h3><p>${item[2]}</p><p><strong>${item[3]}</strong></p>`;
+}
+document.querySelectorAll('.info-group').forEach(group=>{
+  const panelId=group.dataset.panel;
+  group.querySelectorAll('[data-info]').forEach(el=>{
+    el.addEventListener('click',()=>{
+      group.querySelectorAll('[data-info]').forEach(x=>x.classList.remove('active'));
+      el.classList.add('active');
+      renderInfo(panelId,infoContent[el.dataset.info]);
+    });
+  });
+});
+const requestSteps={
+  submit:{
+    tag:'Submit',
+    title:'Medarbetaren skickar in ärendet',
+    body:'En användare kontaktar NordIQ via Teams, e-post eller webbportal. Ärendet registreras direkt så det finns spårbarhet från första kontakt.',
+    example:'NordIQ-exempel: en ny medarbetare behöver åtkomst till ett verktyg.'
+  },
+  triage:{
+    tag:'Triage',
+    title:'NordIQ klassificerar ärendet',
+    body:'AI-agenten avgör om frågan är FAQ, service request, incident eller change. Målet är klassificering inom två sekunder.',
+    example:'NordIQ-exempel: “jag kommer inte in i systemet” kan vara incident, medan “jag behöver ny behörighet” är request.'
+  },
+  approve:{
+    tag:'Approve',
+    title:'Godkännande hanteras vid behov',
+    body:'Om ärendet kräver beslut skickas det till rätt godkännare, till exempel chef, budgetägare, security eller dataägare.',
+    example:'NordIQ-exempel: låg-risk-ärenden kan vara förhandsgodkända, men känslig access ska inte godkännas av AI-agenten.'
+  },
+  assign:{
+    tag:'Assign',
+    title:'Ärendet routas till rätt fulfiller',
+    body:'NordIQ skickar ärendet till AI-agenten, IT Ops, Incident Management, Change Enablement, Dev eller extern leverantör.',
+    example:'NordIQ-exempel: om AI inte kan hantera ärendet ska det till Anna och IT Ops inom två minuter.'
+  },
+  fulfill:{
+    tag:'Fulfill',
+    title:'Lösningen genomförs',
+    body:'AI-agenten löser cirka 40-60 procent av inkommande ärenden. Övriga ärenden hanteras av rätt resolver enligt prioritet.',
+    example:'NordIQ-exempel: FAQ-frågor kan lösas direkt, men SEV1/SEV2 ska hanteras av människor enligt incidentprocess.'
+  },
+  verify:{
+    tag:'Verify',
+    title:'Lösningen verifieras',
+    body:'Tjänsten kontrollerar att svaret eller åtgärden faktiskt löste behovet, antingen via användarbekräftelse eller automatiserad kontroll.',
+    example:'NordIQ-exempel: användaren bekräftar att åtkomst fungerar, eller så verifieras det i systemet.'
+  },
+  close:{
+    tag:'Close',
+    title:'Ärendet stängs och blir input till lärande',
+    body:'När lösningen är verifierad stängs ärendet. Om det visar en kunskapslucka eller återkommande fel ska knowledgebase uppdateras inom 24 timmar.',
+    example:'NordIQ-exempel: flera liknande frågor kan skapa en förbättring i continual improvement-registret.'
+  }
+};
+document.querySelectorAll('.request-flow .step').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.request-flow .step').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const item=requestSteps[btn.dataset.step];
+    const panel=document.getElementById('requestDetail');
+    panel.innerHTML=`<span class="tag">${item.tag}</span><h3>${item.title}</h3><p>${item.body}</p><p><strong>${item.example}</strong></p>`;
+  });
+});
+show(0);
+</script>
+</body>
+</html>
