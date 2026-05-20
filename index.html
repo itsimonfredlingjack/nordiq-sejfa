@@ -13,7 +13,7 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--navy);color:var(--light);font-family:Calibri,Arial,sans-serif;overflow:hidden}
 .deck{height:100vh;width:100vw;position:relative}
-.slide{display:none;position:absolute;inset:0;padding:108px 66px 58px 88px;background:linear-gradient(135deg,var(--navy),#0b1827 58%,#0f2030);overflow:hidden}
+.slide{display:none;position:absolute;inset:0;padding:108px 66px 58px 88px;background:linear-gradient(135deg,var(--navy),#0b1827 58%,#0f2030);overflow:auto}
 .slide.active{display:flex;flex-direction:column;justify-content:center}
 .bar{position:absolute;left:0;top:0;width:16px;height:100%;background:var(--gold)}
 .header{position:absolute;top:0;left:0;right:0;height:76px;padding-left:88px;background:var(--navy2);display:flex;align-items:center;color:var(--white);font-size:25px;font-weight:700}
@@ -75,7 +75,7 @@ body{margin:0;background:var(--navy);color:var(--light);font-family:Calibri,Aria
 .controls{position:fixed;right:24px;bottom:20px;display:flex;gap:10px;align-items:center;z-index:20}.controls button{background:var(--panel);color:var(--white);border:1px solid var(--line);border-radius:5px;width:44px;height:38px;cursor:pointer;font-size:24px}.count{color:var(--muted);font-size:14px;min-width:64px;text-align:center}.progress{position:fixed;left:0;bottom:0;height:4px;background:var(--gold);z-index:20;transition:width .2s}
 @media(max-width:900px){body{overflow:auto}.slide{position:relative;min-height:100vh;padding:96px 28px 66px 44px;overflow:auto}.slide.active{justify-content:flex-start}.header{padding-left:44px;font-size:20px}.title{font-size:39px}.subtitle,.section-copy{font-size:19px}.section-title{font-size:36px}.g2,.g3,.g4,.split,.timeline,.matrix,.table4,.table5,.person-grid{grid-template-columns:1fr}.flow{flex-direction:column}.arrow{transform:rotate(90deg)}}
 
-.slide-content-scale{--content-scale-applied:var(--content-scale,1);width:calc(100% / var(--content-scale-applied));height:calc((100vh - 166px) / var(--content-scale-applied));margin-left:auto;margin-right:auto;zoom:var(--content-scale-applied);overflow:visible;display:flex;flex-direction:column;justify-content:center}
+.slide-content-scale{--content-scale-applied:1;width:100%;min-height:calc(100vh - 166px);height:auto;margin-left:auto;margin-right:auto;transform:none;overflow:visible;display:flex;flex-direction:column;justify-content:center}
 .slide-content-scale > :first-child{margin-top:0}
 
 .enlarged-stable-interactions .flow .step{flex:1 1 0;min-width:0;height:64px;padding:0 10px;display:flex;align-items:center;justify-content:center;text-align:center}
@@ -305,28 +305,8 @@ function fitEnlargedContent(){
   const active=document.querySelector('.slide.active');
   const box=active?.querySelector('.slide-content-scale');
   if(!box) return;
-  const requested=parseFloat(getComputedStyle(box).getPropertyValue('--content-scale'))||1;
-  let scale=requested;
-  for(let attempt=0; attempt<5; attempt++){
-    box.style.setProperty('--content-scale-applied', scale);
-    box.style.width=(100/scale)+'%';
-    const rect=box.getBoundingClientRect();
-    const slideRect=active.getBoundingClientRect();
-    const header=active.querySelector('.header');
-    const headerBottom=header ? header.getBoundingClientRect().bottom : slideRect.top;
-    const cs=getComputedStyle(active);
-    const leftLimit=slideRect.left + parseFloat(cs.paddingLeft || 0);
-    const rightLimit=slideRect.right - parseFloat(cs.paddingRight || 0);
-    const topLimit=headerBottom + 12;
-    const bottomLimit=slideRect.bottom - parseFloat(cs.paddingBottom || 0);
-    const fitW=(rightLimit-leftLimit)/Math.max(rect.width,1);
-    const fitH=(bottomLimit-topLimit)/Math.max(rect.height,1);
-    const next=Math.min(requested, scale*fitW, scale*fitH);
-    if(next >= scale-0.01) break;
-    scale=Math.max(1, next);
-  }
-  box.style.setProperty('--content-scale-applied', scale);
-  box.style.width=(100/scale)+'%';
+  box.style.setProperty('--content-scale-applied', 1);
+  box.style.width='100%';
 }
 const enlargedOriginalShow=show;
 show=function(n){
@@ -334,6 +314,7 @@ show=function(n){
   requestAnimationFrame(()=>requestAnimationFrame(fitEnlargedContent));
 };
 window.addEventListener('load',()=>requestAnimationFrame(()=>requestAnimationFrame(fitEnlargedContent)));
+window.addEventListener('resize',()=>requestAnimationFrame(()=>requestAnimationFrame(fitEnlargedContent)));
 document.addEventListener('click',()=>setTimeout(fitEnlargedContent,30));
 </script>
 
